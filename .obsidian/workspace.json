@@ -4,35 +4,22 @@
     "type": "split",
     "children": [
       {
-        "id": "c4f92bb85772f2f1",
+        "id": "e6b59afb082ac7ad",
         "type": "tabs",
         "children": [
           {
-            "id": "6a1b760153378c56",
+            "id": "cd7266be4f5f4026",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "K8S/Kubernetes/淺談 Kubernetes 設計原理.md",
-                "mode": "source",
-                "source": true
-              }
-            }
-          },
-          {
-            "id": "0d22e19a9236b213",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md",
+                "file": "img_process/img_process Reference web.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -106,7 +93,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md",
+                "file": "img_process/img_process Reference web.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -123,7 +110,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md",
+                "file": "img_process/img_process Reference web.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -146,7 +133,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md"
+                "file": "img_process/img_process Reference web.md"
               }
             }
           },
@@ -179,8 +166,11 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "0d22e19a9236b213",
+  "active": "cd7266be4f5f4026",
   "lastOpenFiles": [
+    "K8S/Kubernetes/淺談 Kubernetes 設計原理.md",
+    "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md",
+    "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.html",
     "Untitled 1.canvas",
     "img_process/img_process Reference web.md",
     "K8S/Container_Network_Interface/Kubernets 與 CNI 相關的設定.md",
@@ -188,10 +178,8 @@
     "conflict-files-obsidian-git.md",
     "K8S/Container_Network_Interface/Kubernetes - Container Network Interface (CNI).md",
     "img_process",
-    "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md",
     "note.zip",
     "K8S/Container_Network_Interface/img/Pasted image 20230511103421.png",
-    "K8S/Kubernetes/淺談 Kubernetes 設計原理.md",
     "K8S/Kubernetes/kubernetes.md",
     "K8S/Kubernetes/Kubernetes - Node & Architecture Overview.md",
     "K8S/Kubernetes/Kubernetes & CRI (Container Runtime Interface).md",
@@ -226,7 +214,6 @@
     "K8S/Linunx_container/image",
     "K8S/Kubernetes/image",
     "K8S/react",
-    "K8S/Linunx_container",
-    "K8S/Kubernetes"
+    "K8S/Linunx_container"
   ]
 }

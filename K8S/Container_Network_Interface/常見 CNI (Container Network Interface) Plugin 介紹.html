@@ -1,0 +1,2900 @@
+<!doctype html>
+<html>
+    <head>
+        <title>常見 CNI (Container Network Interface) Plugin 介紹</title>
+        <meta charset='utf-8'/>
+        <style>
+ .ͼ1.cm-focused {outline: 1px dotted #212121;}
+.ͼ1 {position: relative !important; box-sizing: border-box; display: flex !important; flex-direction: column;}
+.ͼ1 .cm-scroller {display: flex !important; align-items: flex-start !important; font-family: monospace; line-height: 1.4; height: 100%; overflow-x: auto; position: relative; z-index: 0;}
+.ͼ1 .cm-content[contenteditable=true] {-webkit-user-modify: read-write-plaintext-only;}
+.ͼ1 .cm-content {margin: 0; flex-grow: 2; flex-shrink: 0; display: block; white-space: pre; word-wrap: normal; box-sizing: border-box; padding: 4px 0; outline: none;}
+.ͼ1 .cm-lineWrapping {white-space: pre-wrap; white-space: break-spaces; word-break: break-word; overflow-wrap: anywhere; flex-shrink: 1;}
+.ͼ2 .cm-content {caret-color: black;}
+.ͼ3 .cm-content {caret-color: white;}
+.ͼ1 .cm-line {display: block; padding: 0 2px 0 6px;}
+.ͼ1 .cm-layer > * {position: absolute;}
+.ͼ1 .cm-layer {position: absolute; left: 0; top: 0; contain: size style;}
+.ͼ2 .cm-selectionBackground {background: #d9d9d9;}
+.ͼ3 .cm-selectionBackground {background: #222;}
+.ͼ2.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground {background: #d7d4f0;}
+.ͼ3.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground {background: #233;}
+.ͼ1 .cm-cursorLayer {pointer-events: none;}
+.ͼ1.cm-focused > .cm-scroller > .cm-cursorLayer {animation: steps(1) cm-blink 1.2s infinite;}
+@keyframes cm-blink {50% {opacity: 0;}}
+@keyframes cm-blink2 {50% {opacity: 0;}}
+.ͼ1 .cm-cursor, .ͼ1 .cm-dropCursor {border-left: 1.2px solid black; margin-left: -0.6px; pointer-events: none;}
+.ͼ1 .cm-cursor {display: none;}
+.ͼ3 .cm-cursor {border-left-color: #444;}
+.ͼ1 .cm-dropCursor {position: absolute;}
+.ͼ1.cm-focused > .cm-scroller > .cm-cursorLayer .cm-cursor {display: block;}
+.ͼ2 .cm-activeLine {background-color: #cceeff44;}
+.ͼ3 .cm-activeLine {background-color: #99eeff33;}
+.ͼ2 .cm-specialChar {color: red;}
+.ͼ3 .cm-specialChar {color: #f78;}
+.ͼ1 .cm-gutters {flex-shrink: 0; display: flex; height: 100%; box-sizing: border-box; left: 0; z-index: 200;}
+.ͼ2 .cm-gutters {background-color: #f5f5f5; color: #6c6c6c; border-right: 1px solid #ddd;}
+.ͼ3 .cm-gutters {background-color: #333338; color: #ccc;}
+.ͼ1 .cm-gutter {display: flex !important; flex-direction: column; flex-shrink: 0; box-sizing: border-box; min-height: 100%; overflow: hidden;}
+.ͼ1 .cm-gutterElement {box-sizing: border-box;}
+.ͼ1 .cm-lineNumbers .cm-gutterElement {padding: 0 3px 0 5px; min-width: 20px; text-align: right; white-space: nowrap;}
+.ͼ2 .cm-activeLineGutter {background-color: #e2f2ff;}
+.ͼ3 .cm-activeLineGutter {background-color: #222227;}
+.ͼ1 .cm-panels {box-sizing: border-box; position: sticky; left: 0; right: 0;}
+.ͼ2 .cm-panels {background-color: #f5f5f5; color: black;}
+.ͼ2 .cm-panels-top {border-bottom: 1px solid #ddd;}
+.ͼ2 .cm-panels-bottom {border-top: 1px solid #ddd;}
+.ͼ3 .cm-panels {background-color: #333338; color: white;}
+.ͼ1 .cm-tab {display: inline-block; overflow: hidden; vertical-align: bottom;}
+.ͼ1 .cm-widgetBuffer {vertical-align: text-top; height: 1em; width: 0; display: inline;}
+.ͼ1 .cm-placeholder {color: #888; display: inline-block; vertical-align: top;}
+.ͼ1 .cm-highlightSpace:before {content: attr(data-display); position: absolute; pointer-events: none; color: #888;}
+.ͼ1 .cm-highlightTab {background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="20"><path stroke="%23888" stroke-width="1" fill="none" d="M1 10H196L190 5M190 15L196 10M197 4L197 16"/></svg>'); background-size: auto 100%; background-position: right 90%; background-repeat: no-repeat;}
+.ͼ1 .cm-trailingSpace {background-color: #ff332255;}
+.ͼ1 .cm-button {vertical-align: middle; color: inherit; font-size: 70%; padding: .2em 1em; border-radius: 1px;}
+.ͼ2 .cm-button:active {background-image: linear-gradient(#b4b4b4, #d0d3d6);}
+.ͼ2 .cm-button {background-image: linear-gradient(#eff1f5, #d9d9df); border: 1px solid #888;}
+.ͼ3 .cm-button:active {background-image: linear-gradient(#111, #333);}
+.ͼ3 .cm-button {background-image: linear-gradient(#393939, #111); border: 1px solid #888;}
+.ͼ1 .cm-textfield {vertical-align: middle; color: inherit; font-size: 70%; border: 1px solid silver; padding: .2em .5em;}
+.ͼ2 .cm-textfield {background-color: white;}
+.ͼ3 .cm-textfield {border: 1px solid #555; background-color: inherit;}
+.ͼ1 .cm-foldPlaceholder {background-color: #eee; border: 1px solid #ddd; color: #888; border-radius: .2em; margin: 0 1px; padding: 0 1px; cursor: pointer;}
+.ͼ1 .cm-foldGutter span {padding: 0 1px; cursor: pointer;}
+ /* Sets all the text color to red! */
+.markdown-rendered pre .obsidian-embedded-code-title__code-block-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 85%!important;
+    padding: 3px 8px!important;
+    margin: 0!important;
+    border-radius: 0!important;
+    min-height: unset !important;
+}
+ @charset "UTF-8";
+.cm-s-obsidian pre.HyperMD-codeblock span.cm-formatting-code-block {
+  color: var(--text-muted);
+}
+
+.cm-s-obsidian pre.HyperMD-codeblock .cm-keyword {
+  font-weight: normal;
+}
+
+.theme-dark .cm-s-obsidian {
+  /*
+
+  Name:       yoncé
+  Author:     Thomas MacLean (http://github.com/thomasmaclean)
+
+  Original yoncé color scheme by Mina Markham (https://github.com/minamarkham)
+
+  */
+  /**/
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock {
+  color: #d4d4d4;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-keyword,
+.theme-dark .cm-s-obsidian .cm-math.cm-keyword,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-keyword {
+  color: #00A7AA;
+  font-weight: normal;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-atom,
+.theme-dark .cm-s-obsidian .cm-math.cm-atom,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-atom {
+  color: #F39B35;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-number,
+.theme-dark .cm-s-obsidian .cm-math.cm-number,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-number {
+  color: #A06FCA;
+}
+.theme-dark .cm-s-obsidian span.cm-hmd-frontmatter.cm-type,
+.theme-dark .cm-s-obsidian span.cm-math.cm-type,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock span.cm-type {
+  color: #A06FCA;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-def,
+.theme-dark .cm-s-obsidian .cm-math.cm-def,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-def {
+  color: #98E342;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-property,
+.theme-dark .cm-s-obsidian .cm-math.cm-property,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-property {
+  color: #D4D4D4;
+}
+.theme-dark .cm-s-obsidian span.cm-hmd-frontmatter.cm-variable,
+.theme-dark .cm-s-obsidian span.cm-math.cm-variable,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock span.cm-variable {
+  color: #D4D4D4;
+}
+.theme-dark .cm-s-obsidian span.cm-hmd-frontmatter.cm-variable-2,
+.theme-dark .cm-s-obsidian span.cm-math.cm-variable-2,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock span.cm-variable-2 {
+  color: #da7dae;
+}
+.theme-dark .cm-s-obsidian span.cm-hmd-frontmatter.cm-variable-3,
+.theme-dark .cm-s-obsidian span.cm-math.cm-variable-3,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock span.cm-variable-3 {
+  color: #A06FCA;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-type.cm-def,
+.theme-dark .cm-s-obsidian .cm-math.cm-type.cm-def,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-type.cm-def {
+  color: #FC4384;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-property.cm-def,
+.theme-dark .cm-s-obsidian .cm-math.cm-property.cm-def,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-property.cm-def {
+  color: #FC4384;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-callee,
+.theme-dark .cm-s-obsidian .cm-math.cm-callee,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-callee {
+  color: #FC4384;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-operator,
+.theme-dark .cm-s-obsidian .cm-math.cm-operator,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-operator {
+  color: #FC4384;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-qualifier,
+.theme-dark .cm-s-obsidian .cm-math.cm-qualifier,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-qualifier {
+  color: #FC4384;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-tag,
+.theme-dark .cm-s-obsidian .cm-math.cm-tag,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-tag {
+  color: #FC4384;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-tag.cm-bracket,
+.theme-dark .cm-s-obsidian .cm-math.cm-tag.cm-bracket,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-tag.cm-bracket {
+  color: #D4D4D4;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-attribute,
+.theme-dark .cm-s-obsidian .cm-math.cm-attribute,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-attribute {
+  color: #A06FCA;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-comment,
+.theme-dark .cm-s-obsidian .cm-math.cm-comment,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-comment {
+  color: #696d70;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-comment.cm-tag,
+.theme-dark .cm-s-obsidian .cm-math.cm-comment.cm-tag,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-comment.cm-tag {
+  color: #FC4384;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-comment.cm-attribute,
+.theme-dark .cm-s-obsidian .cm-math.cm-comment.cm-attribute,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-comment.cm-attribute {
+  color: #D4D4D4;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-string,
+.theme-dark .cm-s-obsidian .cm-math.cm-string,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-string {
+  color: #E6DB74;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-string-2,
+.theme-dark .cm-s-obsidian .cm-math.cm-string-2,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-string-2 {
+  color: #F39B35;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-meta,
+.theme-dark .cm-s-obsidian .cm-math.cm-meta,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-meta {
+  color: #D4D4D4;
+  background: inherit;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-builtin,
+.theme-dark .cm-s-obsidian .cm-math.cm-builtin,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-builtin {
+  color: #FC4384;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-header,
+.theme-dark .cm-s-obsidian .cm-math.cm-header,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-header {
+  color: #da7dae;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-hr,
+.theme-dark .cm-s-obsidian .cm-math.cm-hr,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-hr {
+  color: #98E342;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-link,
+.theme-dark .cm-s-obsidian .cm-math.cm-link,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-link {
+  color: #696d70;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.cm-error,
+.theme-dark .cm-s-obsidian .cm-math.cm-error,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-error {
+  border-bottom: 1px solid #C42412;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.CodeMirror-activeline-background,
+.theme-dark .cm-s-obsidian .cm-math.CodeMirror-activeline-background,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .CodeMirror-activeline-background {
+  background: #272727;
+}
+.theme-dark .cm-s-obsidian .cm-hmd-frontmatter.CodeMirror-matchingbracket,
+.theme-dark .cm-s-obsidian .cm-math.CodeMirror-matchingbracket,
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .CodeMirror-matchingbracket {
+  outline: 1px solid grey;
+  color: #D4D4D4 !important;
+} .unused-images-logs {
+    margin-bottom: 13px;
+    margin-top: 5px;
+}
+
+.unused-images-center-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ 
+.pandoc-plugin-error {
+    color: red;
+}
+ /* @settings
+
+name: Hover Editor
+id: hover-editor
+settings:
+    - 
+        id: titlebar-heading
+        title: Title bar
+        type: heading
+        level: 1
+        collapsed: true
+    - 
+        id: titlebar-heading
+        title: Title bar background/foreground
+        type: heading
+        level: 2
+        collapsed: true
+    - 
+        id: he-title-bar-active-bg
+        title: Active unpinned title bar background color
+        type: variable-themed-color
+        format: hex
+        default-light: '#'
+        default-dark: '#'
+    - 
+        id: he-title-bar-inactive-bg
+        title: Inactive unpinned title bar background color
+        type: variable-themed-color
+        format: hex
+        default-light: '#'
+        default-dark: '#'
+    - 
+        id: he-title-bar-active-pinned-bg
+        title: Active pinned title bar background color
+        type: variable-themed-color
+        format: hex
+        default-light: '#'
+        default-dark: '#'
+    - 
+        id: he-title-bar-inactive-pinned-bg
+        title: Inactive pinned title bar background color
+        type: variable-themed-color
+        format: hex
+        default-light: '#'
+        default-dark: '#'
+    - 
+        id: he-title-bar-active-fg
+        title: Active title bar foreground color
+        type: variable-themed-color
+        format: hex
+        default-light: '#'
+        default-dark: '#'
+    - 
+        id: he-title-bar-inactive-fg
+        title: Inactive title bar foreground color
+        type: variable-themed-color
+        format: hex
+        default-light: '#'
+        default-dark: '#'
+    - 
+        id: titlebar-action-heading
+        title: Title bar icons
+        type: heading
+        level: 2
+        collapsed: true
+    - 
+        id: he-title-bar-inactive-action
+        title: Title bar inactive icon color
+        type: variable-themed-color
+        format: hex
+        default-light: '#'
+        default-dark: '#'
+    - 
+        id: he-title-bar-active-action
+        title: Titlebar active icon color
+        type: variable-themed-color
+        format: hex
+        default-light: '#'
+        default-dark: '#'
+    - 
+        id: titlebar-text-heading
+        title: Title bar text
+        type: heading
+        level: 2
+        collapsed: true
+    - 
+        id: he-title-bar-font-size
+        title: Title bar Font size
+        type: variable-text
+        description: Accepts any CSS font-size value
+        default: 15px
+    - 
+        id: titlebar-height-heading
+        title: Title bar height
+        type: heading
+        level: 2
+        collapsed: true
+    - 
+        id: he-title-bar-height
+        title: Title bar height
+        type: variable-text
+        description: Accepts any CSS font-size value
+        default: 28px
+*/
+
+:root {
+  /* general styling */
+  --he-popover-opacity-while-dragging: 0.8;
+  --he-popover-border-radius: 6px;
+  --he-popover-header-transition-speed: 0.3s;
+  --he-popover-snap-to-edge-transition-speed: 0.3s;
+  /* resize handle sizing */
+  --he-resize-handle-side-size: 12px;
+  --he-resize-handle-corner-size: 18px;
+  /* view header height */
+  --he-view-header-height: 36px;
+}
+
+body {
+  --he-text-on-accent-inactive: var(--text-on-accent); /* couldn't find a good variable that worked across themes */
+  --he-text-on-accent-active: #fff;
+  /* z-index layer settings, probably not a good idea to mess with these */
+  --he-popover-layer-inactive: var(--layer-popover);
+  --he-popover-layer-active: calc(var(--he-popover-layer-inactive) + 1);
+  --he-popover-layer-new: calc(var(--he-popover-layer-inactive) + 2);
+  --he-leaf-drag-overlay: calc(var(--he-popover-layer-inactive) + 3);
+  /* calculated variables, do not modify */
+  --he-resize-handle-side-offset: calc((var(--he-resize-handle-side-size) - 3px) * -1);
+  --he-resize-handle-corner-offset: calc((var(--he-resize-handle-corner-size) / 2) * -1);
+  --he-resize-handle-side-length: calc(100% - var(--he-resize-handle-corner-size));
+  /* title bar colors */
+  --he-title-bar-active-bg: var(--interactive-accent);
+  --he-title-bar-inactive-bg: #777777;
+  --he-title-bar-inactive-pinned-bg: #777777;
+  --he-title-bar-active-pinned-bg: var(--interactive-accent);
+
+  --he-title-bar-active-fg: var(--he-text-on-accent-active);
+  --he-title-bar-inactive-fg: var(--he-text-on-accent-inactive);
+  /* title bar action/icon colors */
+  --he-title-bar-inactive-action: var(--he-text-on-accent-inactive);
+  --he-title-bar-active-action: var(--he-text-on-accent-active);
+  /* titlebar sizing */
+  --he-title-bar-height: 28px;
+  --he-title-bar-font-size: 15px;
+}
+
+.popover.hover-editor .workspace-leaf,
+.popover.hover-editor .workspace-split {
+  height: 100%;
+  width: 100%;
+}
+
+.popover.hover-editor {
+  min-height: unset;
+  max-height: unset;
+  /* touch action none fixes dragging and resizing on mobile */
+  touch-action: none;
+  /* this is set to allow the drag/resize handles to overflow the popover frame */
+  overflow: visible;
+  border: none;
+  padding: 0;
+  z-index: var(--he-popover-layer-inactive);
+  border-radius: var(--he-popover-border-radius);
+
+  /* Prevent snagging on titlebar */
+  -webkit-app-region: no-drag;
+}
+
+.popover.hover-editor .markdown-preview-view {
+  font-size: inherit;
+}
+
+.popover.hover-editor.is-active {
+  z-index: var(--he-popover-layer-active);
+}
+
+.popover.hover-editor.is-new {
+  z-index: var(--he-popover-layer-new);
+}
+
+/* Drag/link overlay needs to overlay popups */
+.workspace-fake-target-overlay,
+.workspace-drop-overlay {
+  z-index: var(--he-leaf-drag-overlay);
+}
+
+.popover.hover-editor .resize-handle {
+  position: absolute;
+  touch-action: none;
+}
+
+.popover.hover-editor .resize-handle.top {
+  top: var(--he-resize-handle-side-offset);
+  height: var(--he-resize-handle-side-size);
+  left: calc(var(--he-resize-handle-corner-offset) * -1);
+  width: var(--he-resize-handle-side-length);
+}
+
+.popover.hover-editor .resize-handle.left {
+  height: var(--he-resize-handle-side-length);
+  left: var(--he-resize-handle-side-offset);
+  top: calc(var(--he-resize-handle-corner-offset) * -1);
+  width: var(--he-resize-handle-side-size);
+}
+
+.popover.hover-editor .resize-handle.right {
+  height: var(--he-resize-handle-side-length);
+  right: var(--he-resize-handle-side-offset);
+  top: calc(var(--he-resize-handle-corner-offset) * -1);
+  width: var(--he-resize-handle-side-size);
+}
+
+.popover.hover-editor .resize-handle.bottom {
+  bottom: var(--he-resize-handle-side-offset);
+  height: var(--he-resize-handle-side-size);
+  left: calc(var(--he-resize-handle-corner-offset) * -1);
+  width: var(--he-resize-handle-side-length);
+}
+
+.popover.hover-editor .resize-handle.bottom-left {
+  bottom: var(--he-resize-handle-corner-offset);
+  height: var(--he-resize-handle-corner-size);
+  left: var(--he-resize-handle-corner-offset);
+  width: var(--he-resize-handle-corner-size);
+}
+
+.popover.hover-editor .resize-handle.bottom-right {
+  bottom: var(--he-resize-handle-corner-offset);
+  height: var(--he-resize-handle-corner-size);
+  right: var(--he-resize-handle-corner-offset);
+  width: var(--he-resize-handle-corner-size);
+}
+
+.popover.hover-editor .resize-handle.top-left {
+  top: var(--he-resize-handle-corner-offset);
+  height: var(--he-resize-handle-corner-size);
+  left: var(--he-resize-handle-corner-offset);
+  width: var(--he-resize-handle-corner-size);
+}
+
+.popover.hover-editor .resize-handle.top-right {
+  top: var(--he-resize-handle-corner-offset);
+  height: var(--he-resize-handle-corner-size);
+  right: var(--he-resize-handle-corner-offset);
+  width: var(--he-resize-handle-corner-size);
+}
+
+/* body.is-dragging-popover .tooltip {
+  opacity: 0;
+} */
+
+.popover-header-icon {
+  width: fit-content;
+}
+
+.mod-pin-popover > svg {
+  transform: rotate(45deg);
+}
+
+.mod-pin-popover.is-active > svg {
+  transform: rotate(0deg);
+}
+
+.popover-action,
+.popover-header-icon {
+  margin: 0 8px;
+  cursor: pointer;
+  color: var(--he-title-bar-inactive-action);
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.popover-action.is-active,
+.mod-pin-popover.is-active {
+  color: var(--he-title-bar-active-action);
+}
+
+.popover-action:hover,
+.popover-header-icon:hover {
+  color: var(--he-title-bar-active-action);
+}
+
+.popover-action.is-active svg,
+.mod-pin-popover.is-active svg {
+}
+
+.mod-pin-popover.is-active > svg {
+  transform: unset;
+}
+
+.popover.hover-editor .workspace-leaf-content[data-type="empty"] .view-header {
+  /* ensures that minimal theme doesn't hide the popover header */
+  display: flex;
+}
+
+.popover.hover-editor .workspace-split > .workspace-leaf:last-child > .workspace-leaf-resize-handle {
+  /* this hides the leaf resize handles that touch the edge of the popover */
+  /* without this the leaf resize handles conflict with the popover resize handles */
+  display: none;
+}
+
+.popover.hover-editor.is-dragging {
+  opacity: var(--he-popover-opacity-while-dragging);
+}
+
+.popover.hover-editor:is(.snap-to-viewport, .snap-to-left, .snap-to-right) .resize-handle {
+  display: none;
+}
+
+.popover.hover-editor.snap-to-right .resize-handle.left,
+.popover.hover-editor.snap-to-left .resize-handle.right {
+  display: block;
+}
+
+.popover.hover-editor.is-dragging.snap-to-left,
+.popover.hover-editor.is-dragging.snap-to-right,
+.popover.hover-editor.is-dragging.snap-to-viewport {
+  transition: width var(--he-popover-snap-to-edge-transition-speed),
+    height var(--he-popover-snap-to-edge-transition-speed), top var(--he-popover-snap-to-edge-transition-speed),
+    left var(--he-popover-snap-to-edge-transition-speed);
+}
+
+.hover-popover.is-dragging.snap-to-left::after,
+.hover-popover.is-dragging.snap-to-right::after,
+.hover-popover.is-dragging.snap-to-viewport::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  border-radius: var(--he-popover-border-radius);
+  box-shadow: inset 0px 0px 0px 4px var(--interactive-accent);
+  pointer-events: none;
+}
+
+.popover.hover-editor.snap-to-left {
+  max-height: unset !important;
+}
+
+.popover.hover-editor.snap-to-right {
+  right: 0 !important;
+  max-height: unset !important;
+}
+
+.popover.hover-editor.snap-to-viewport {
+  max-height: unset !important;
+  max-width: unset !important;
+}
+
+.popover.hover-editor .popover-titlebar {
+  display: flex;
+  height: var(--he-title-bar-height);
+  width: 100%;
+  background-color: var(--he-title-bar-inactive-bg);
+}
+
+.popover.hover-editor.is-active .popover-titlebar {
+  background-color: var(--he-title-bar-active-bg);
+}
+
+.popover.hover-editor.is-pinned.is-pinned .popover-titlebar {
+  background-color: var(--he-title-bar-inactive-pinned-bg);
+}
+
+.popover.hover-editor.is-pinned.is-pinned.is-active .popover-titlebar {
+  background-color: var(--he-title-bar-active-pinned-bg);
+}
+
+.popover.hover-editor .popover-titlebar .popover-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.popover.hover-editor .popover-content {
+  margin: 0;
+  border-radius: var(--he-popover-border-radius);
+  overflow: hidden;
+  height: 100%;
+}
+
+.popover.hover-editor .popover-titlebar .popover-title {
+  display: block;
+  flex-grow: 1;
+  transition: all 0.3s;
+  align-self: center;
+  font-size: var(--he-title-bar-font-size);
+  font-weight: 500;
+  white-space: pre;
+  word-wrap: normal;
+  color: var(--he-title-bar-inactive-fg);
+  overflow: hidden;
+  position: relative;
+}
+
+.popover.hover-editor.is-active .popover-title {
+  color: var(--he-title-bar-active-fg);
+}
+
+.popover.hover-editor.is-active .popover-title:after {
+  background: linear-gradient(to right, transparent, var(--he-title-bar-active-bg));
+}
+
+.popover.hover-editor.is-pinned.is-pinned.is-active .popover-title:after {
+  background: linear-gradient(to right, transparent, var(--he-title-bar-active-pinned-bg));
+}
+
+.popover.hover-editor.is-pinned.is-pinned .popover-title:after {
+  background: linear-gradient(to right, transparent, var(--he-title-bar-inactive-pinned-bg));
+}
+
+.popover.hover-editor .popover-title:after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 100%;
+  background: linear-gradient(to right, transparent, var(--he-title-bar-inactive-bg));
+}
+
+.popover.hover-editor .mod-show-navbar svg {
+  transform: rotate(90deg);
+}
+
+.popover.hover-editor > .popover-content > .workspace-split {
+  height: calc(100% - var(--he-title-bar-height));
+}
+
+.popover.hover-editor .view-header {
+  border-top: none;
+  transition: all var(--he-popover-header-transition-speed);
+  display: flex;
+}
+
+.popover.hover-editor .view-header .view-header-icon {
+  display: flex;
+}
+
+.popover.hover-editor.show-navbar:not(.is-minimized) .popover-title {
+  opacity: 0;
+}
+
+.popover.hover-editor:not(.show-navbar) .view-header {
+  height: 0px;
+  overflow: hidden;
+}
+
+.popover.hover-editor.show-navbar .view-header {
+  /* theme devs: if you want to change the header height, you must do so by setting the --he-view-header-height variable */
+  /* if you don't use the variable, you will break internal measurement logic */
+  height: var(--he-view-header-height);
+  overflow: unset;
+}
+
+.popover.hover-editor:not(.show-navbar) .view-content {
+  height: 100%;
+}
+
+.popover.hover-editor .workspace-leaf-content[data-type="image"] .view-content {
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.popover.hover-editor .workspace-leaf-content[data-type="image"] img {
+  display: block;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  max-width: unset;
+  border-radius: 0;
+}
+
+body .popover.hover-editor .view-content {
+  /* theme devs: if you want to change the header height, you must do so by setting the --he-view-header-height variable */
+  /* if you don't use the variable, you will break internal measurement logic */
+  height: calc(100% - var(--he-view-header-height));
+}
+
+/* start: zoomable images feature */
+
+.popover.hover-editor.image-zoom .view-content .image-embed:active {
+  aspect-ratio: unset;
+  cursor: zoom-out;
+  display: block;
+  z-index: 200;
+  position: fixed;
+  max-height: calc(100% + 1px);
+  max-width: 100%;
+  height: calc(100% + 1px);
+  width: 100%;
+  object-fit: contain;
+  margin: -0.5px auto 0;
+  text-align: center;
+  padding: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: unset;
+}
+
+/* extra specificity to override some community theme styles that cause issues */
+.popover.hover-editor.image-zoom .view-content .image-embed img:active {
+  top: 50%;
+  z-index: 99;
+  transform: translateY(-50%);
+  padding: 0;
+  margin: 0 auto;
+  width: calc(100% - 20px);
+  height: unset;
+  max-height: 95vh;
+  object-fit: contain;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  opacity: 1;
+  max-width: unset;
+  max-height: 100%;
+}
+
+.popover.hover-editor.image-zoom .view-content .image-embed:active:after {
+  background-color: var(--background-primary);
+  opacity: 0.9;
+  content: " ";
+  height: calc(100% + 1px);
+  width: 100%;
+  position: fixed;
+  left: 0;
+  right: 1px;
+  z-index: 0;
+}
+
+.popover.hover-editor.image-zoom .view-content img {
+  cursor: zoom-in;
+}
+
+/* extra specificity to override some community theme styles that cause issues */
+.popover.hover-editor.image-zoom .workspace-leaf-content[data-type="image"] img {
+  cursor: zoom-in;
+  top: 50%;
+  transform: translateY(-50%);
+  object-fit: contain;
+  height: unset;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  opacity: 1;
+  max-height: 100%;
+}
+
+/* end: zoomable images feature */
+ .templater_search {
+    width: calc(100% - 20px);
+}
+
+.templater_div {
+    border-top: 1px solid var(--background-modifier-border);
+}
+
+.templater_div > .setting-item {
+    border-top: none !important;
+    align-self: center;
+}
+
+.templater_div > .setting-item > .setting-item-control {
+    justify-content: space-around;
+    padding: 0;
+    width: 100%;
+}
+
+.templater_div
+    > .setting-item
+    > .setting-item-control
+    > .setting-editor-extra-setting-button {
+    align-self: center;
+}
+
+.templater_donating {
+    margin: 10px;
+}
+
+.templater_title {
+    margin: 0;
+    padding: 0;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.templater_template {
+    align-self: center;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 70%;
+}
+
+.templater_cmd {
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 14px;
+    width: 100%;
+}
+
+.templater_div2 > .setting-item {
+    align-content: center;
+    justify-content: center;
+}
+
+.templater-prompt-div {
+    display: flex;
+}
+
+.templater-prompt-form {
+    display: flex;
+    flex-grow: 1;
+}
+
+.templater-prompt-input {
+    flex-grow: 1;
+}
+
+.templater-button-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+textarea.templater-prompt-input {
+    height: 10rem;
+}
+
+textarea.templater-prompt-input:focus {
+    border-color: var(--interactive-accent);
+}
+
+.cm-s-obsidian .templater-command-bg {
+    left: 0px;
+    right: 0px;
+    background-color: var(--background-primary-alt);
+}
+
+.cm-s-obsidian .cm-templater-command {
+    font-size: 0.85em;
+    font-family: var(--font-monospace);
+    line-height: 1.3;
+}
+
+.cm-s-obsidian .templater-inline .cm-templater-command {
+    background-color: var(--background-primary-alt);
+}
+
+.cm-s-obsidian .cm-templater-command.cm-templater-opening-tag {
+    font-weight: bold;
+}
+
+.cm-s-obsidian .cm-templater-command.cm-templater-closing-tag {
+    font-weight: bold;
+}
+
+.cm-s-obsidian .cm-templater-command.cm-templater-interpolation-tag {
+    color: #008bff;
+}
+
+.cm-s-obsidian .cm-templater-command.cm-templater-execution-tag {
+    color: #c0d700;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-keyword {
+    color: #00a7aa;
+    font-weight: normal;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-atom {
+    color: #f39b35;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-number {
+    color: #a06fca;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-type {
+    color: #a06fca;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-def {
+    color: #98e342;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-property {
+    color: #d4d4d4;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-variable {
+    color: #d4d4d4;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-variable-2 {
+    color: #da7dae;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-variable-3 {
+    color: #a06fca;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-type.cm-def {
+    color: #fc4384;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-property.cm-def {
+    color: #fc4384;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-callee {
+    color: #fc4384;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-operator {
+    color: #fc4384;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-qualifier {
+    color: #fc4384;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-tag {
+    color: #fc4384;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-tag.cm-bracket {
+    color: #d4d4d4;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-attribute {
+    color: #a06fca;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-comment {
+    color: #696d70;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-comment.cm-tag {
+    color: #fc4384;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-comment.cm-attribute {
+    color: #d4d4d4;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-string {
+    color: #e6db74;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-string-2 {
+    color: #f39b35;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-meta {
+    color: #d4d4d4;
+    background: inherit;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-builtin {
+    color: #fc4384;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-header {
+    color: #da7dae;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-hr {
+    color: #98e342;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-link {
+    color: #696d70;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.cm-error {
+    border-bottom: 1px solid #c42412;
+}
+
+.theme-dark .cm-s-obsidian pre.HyperMD-codeblock .cm-keyword {
+    font-weight: normal;
+}
+
+.theme-dark
+    .cm-s-obsidian
+    .cm-templater-command.CodeMirror-activeline-background {
+    background: #272727;
+}
+
+.theme-dark .cm-s-obsidian .cm-templater-command.CodeMirror-matchingbracket {
+    outline: 1px solid grey;
+    color: #d4d4d4 !important;
+}
+
+.CodeMirror-hints {
+    position: absolute;
+    z-index: 10;
+    overflow: hidden;
+    list-style: none;
+
+    margin: 0;
+    padding: 2px;
+
+    -webkit-box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    border: 1px solid silver;
+
+    background: white;
+    font-size: 90%;
+    font-family: monospace;
+
+    max-height: 20em;
+    overflow-y: auto;
+}
+
+.CodeMirror-hint {
+    margin: 0;
+    padding: 0 4px;
+    border-radius: 2px;
+    white-space: pre;
+    color: black;
+    cursor: pointer;
+}
+
+li.CodeMirror-hint-active {
+    background: #08f;
+    color: white;
+}
+ /* @settings
+
+name: Ozan's Image in Editor Plugin
+id: oz-image-in-editor-plugin
+settings:
+
+    -
+        id: oz-img-in-editor-max-transclusion-height
+        title: Transclusion Embed Maximum Height
+        description: Set the max height of transclusion render in editor as px
+        type: variable-number
+        default: 600
+        format: px
+    -
+        id: oz-img-in-editor-max-msg-height
+        title: MSG Embed Maximum Height
+        description: Set the max height of msg render in editor as px
+        type: variable-number
+        default: 300
+        format: px
+    -
+        id: oz-img-in-editor-img-size-xx-small
+        title: Alt Text "#xx-small" Maximum Image Width
+        description: Set the max width of images with "#xx-small" alt text
+        type: variable-number
+        default: 25
+        format: "%"
+    -
+        id: oz-img-in-editor-img-size-x-small
+        title: Alt Text "#x-small" Maximum Image Width
+        description: Set the max width of images with "#x-small" alt text
+        type: variable-number
+        default: 50
+        format: "%"
+    -
+        id: oz-img-in-editor-img-size-small
+        title: Alt Text "#small" Maximum Image Width
+        description: Set the max width of images with "#small" alt text
+        type: variable-number
+        default: 75
+        format: "%"
+*/
+
+.theme-light,
+.theme-dark {
+    --oz-img-in-editor-max-msg-height: 300px;
+    --oz-img-in-editor-max-transclusion-height: 600px;
+    --oz-img-in-editor-img-size-xx-small: 25%;
+    --oz-img-in-editor-img-size-x-small: 50%;
+    --oz-img-in-editor-img-size-small: 75%;
+}
+
+.CodeMirror-linewidget img {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.theme-dark img[alt$='#invert'],
+.theme-dark div.oz-image-widget > img[alt$='#invert'],
+.theme-dark div.oz-image-widget-cm6 > img[alt$='#invert'] {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+.oz-transclusion-widget,
+.oz-transclusion-widget-cm6 {
+    padding: 3px 3px 3px 19px;
+    border: 0.7px solid var(--text-muted);
+    max-height: var(oz-img-in-editor-max-transclusion-height);
+    overflow: auto;
+    border-radius: 7px;
+    margin-top: 5px;
+}
+
+.oz-coffee-div,
+.oz-tip-div {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.oz-tip-div img {
+    border-radius: 10px;
+}
+
+/* Line Numbers In Editor CodeBlock Renders */
+pre[class*='language-'].line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+}
+pre[class*='language-'].line-numbers > code {
+    position: relative;
+    white-space: inherit;
+}
+.line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -3.8em;
+    width: 3em; /* works for line-numbers below 1000 lines */
+    letter-spacing: -1px;
+    border-right: 1px solid #999;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.line-numbers-rows > span {
+    display: block;
+    counter-increment: linenumber;
+}
+.line-numbers-rows > span:before {
+    content: counter(linenumber);
+    color: #999;
+    display: block;
+    padding-right: 0.8em;
+    text-align: right;
+}
+
+.mermaid-error-information {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.oz-modal-center {
+    text-align: center;
+    margin: 20px 10px 20px 10px;
+}
+
+.oz-modal-title {
+    text-align: center;
+}
+
+.inline-mathjax-block {
+    margin-left: 5px;
+}
+
+.oz-image-widget > img,
+.oz-image-widget-cm6 > img {
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+div.oz-transclusion-widget pre,
+div.oz-transclusion-widget-cm6 pre {
+    overflow-x: auto;
+}
+
+.oz-transclusion-widget > *,
+.oz-transclusion-widget-cm6 > * {
+    user-select: text !important;
+}
+
+/* Rich Link Cards */
+/* Credit: https://github.com/dhamaniasad/obsidian-rich-links */
+.oz-rich-link-card {
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 3px;
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    background-color: var(--background-primary);
+}
+
+.oz-rich-link-card-container {
+    position: relative;
+}
+
+.oz-rich-link-image-container {
+    height: 100px;
+    width: 35%;
+    min-width: 120px;
+    overflow: hidden;
+    border-right: 1px solid var(--background-modifier-border);
+}
+
+.oz-rich-link-image {
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-bottom: 100px;
+    background-color: var(--background-secondary);
+}
+
+.oz-rich-link-card-text {
+    padding: 4px;
+    width: 75%;
+}
+
+.oz-rich-link-card-title {
+    font-family: sans-serif;
+    font-size: 16px;
+    margin: 0 0 4px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--text-normal);
+}
+
+.oz-rich-link-card-description {
+    font-family: sans-serif;
+    font-size: 14px;
+    margin: 0;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.oz-rich-link-href {
+    font-family: sans-serif;
+    font-size: 14px;
+    margin: 0;
+    color: var(--text-faint);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.image-in-editor-settings-main-header {
+    text-align: center !important;
+    margin-bottom: 20px;
+}
+
+.image-in-editor-cm-header {
+    margin-top: 0px;
+}
+
+.image-in-editor-editor-header {
+    margin-bottom: 5px;
+}
+
+/* Sizing for CM5 and CM6 */
+
+div.oz-image-widget > img[alt$='#small'],
+div.oz-image-widget-cm6 > img[alt$='#small'] {
+    max-width: var(--oz-img-in-editor-img-size-small) !important;
+}
+
+div.oz-image-widget > img[alt$='#x-small'],
+div.oz-image-widget-cm6 > img[alt$='#x-small'] {
+    max-width: var(--oz-img-in-editor-img-size-x-small) !important;
+}
+
+div.oz-image-widget > img[alt$='#xx-small'],
+div.oz-image-widget-cm6 > img[alt$='#xx-small'] {
+    max-width: var(--oz-img-in-editor-img-size-xx-small) !important;
+}
+
+/* Style For CM6 */
+
+div.oz-image-widget-cm6,
+div.oz-custom-html-widget-cm6,
+div.oz-pdf-widget-cm6 {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+div.oz-image-widget-cm6 + br,
+div.oz-custom-html-widget-cm6 + br,
+div.oz-pdf-widget-cm6 + br {
+    display: none;
+}
+
+.cm-line div.oz-transclusion-widget-cm6 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.cm-line div.oz-transclusion-widget-cm6 * {
+    margin-block-start: 0px !important;
+    margin-block-end: 0px !important;
+}
+
+/* Legacy Admonition */
+
+.oz-admonition {
+    margin: 1.5em 0;
+    padding: 0;
+    overflow: hidden;
+    page-break-inside: avoid;
+    border-left: 0.3rem solid rgb(var(--oz-admonition-color));
+    border-radius: 0.1rem;
+    box-shadow: 0 0.2rem 0.5rem rgb(44, 43, 43);
+}
+
+.oz-admonition-title {
+    position: relative;
+    padding: 15px 5px 15px 15px;
+    font-weight: 700;
+    background-color: rgba(var(--oz-admonition-color), 0.1);
+}
+
+.oz-admonition-title-content {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.oz-admonition-content-holder {
+    position: relative;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.oz-admonition-content {
+    margin: 10px 15px;
+    position: relative;
+    overflow-x: auto;
+}
+
+.oz-admonition-title-markdown {
+    text-transform: capitalize;
+    display: block;
+}
+
+.oz-transclusion-widget-cm6 span.hashtag {
+    background-color: var(--tag-background);
+    border: var(--tag-border-width) solid var(--tag-border-color);
+    border-radius: var(--tag-radius);
+    color: var(--tag-color);
+    font-size: var(--tag-size);
+    text-decoration: var(--tag-decoration);
+    padding: var(--tag-padding-y) var(--tag-padding-x);
+    line-height: 1;
+}
+
+.oz-custom-html-widget-cm6 .msg-handler-plugin-renderer {
+    max-height: var(--oz-img-in-editor-max-msg-height);
+    overflow-y: scroll;
+    border: 0.1px solid var(--text-muted);
+    padding: 10px;
+}
+
+.cm-line:has(div.is-collapsed) .oz-custom-html-widget-cm6,
+.cm-line:has(div.is-collapsed) .oz-image-widget-cm6,
+.cm-line:has(div.is-collapsed) .oz-pdf-widget-cm6,
+.cm-line:has(div.is-collapsed) .oz-transclusion-widget-cm6 {
+    display: none;
+}
+ :root {
+  --advanced-tables-helper-size: 28px;
+}
+
+.HyperMD-table-row span.cm-inline-code {
+  font-size: 100%;
+  padding: 0px;
+}
+
+.advanced-tables-buttons>div>.title {
+  font-weight: var(--font-medium);
+  font-size: var(--nav-item-size);
+  color: var(--nav-item-color);
+  text-decoration: underline;
+}
+
+[data-type="advanced-tables-toolbar"] .nav-buttons-container {
+  column-gap: 0.2rem;
+  margin: 0.2rem 0 0.2rem 0;
+  justify-content: start;
+}
+
+[data-type="advanced-tables-toolbar"] .nav-buttons-container::before {
+  min-width: 2.6rem;
+  line-height: var(--advanced-tables-helper-size);
+  font-size: var(--nav-item-size);
+  font-weight: var(--nav-item-weight);
+  color: var(--nav-item-color);
+}
+
+[data-type="advanced-tables-toolbar"] .nav-buttons-container>* {
+  height: var(--advanced-tables-helper-size);
+  line-height: var(--advanced-tables-helper-size);
+}
+
+[data-type="advanced-tables-toolbar"] .nav-buttons-container .nav-action-button {
+  width: var(--advanced-tables-helper-size);
+  height: var(--advanced-tables-helper-size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--radius-s);
+}
+
+[data-type="advanced-tables-toolbar"] .nav-buttons-container .nav-action-button:hover {
+  background-color: var(--nav-item-background-hover);
+  color: var(--nav-item-color-hover);
+  font-weight: var(--nav-item-weight-hover);
+}
+
+.advanced-tables-row-label {
+  width: 50px;
+}
+
+.widget-icon {
+  width: 20px;
+  height: 20px;
+  fill: var(--text-muted);
+}
+
+.widget-icon:hover {
+  fill: var(--text-normal);
+}
+
+.advanced-tables-csv-export textarea {
+  height: 200px;
+  width: 100%;
+}
+
+.advanced-tables-donation {
+  width: 70%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.advanced-tables-donate-button {
+  margin: 10px;
+} @keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.workspace-leaf-content[data-type='git-view'] .view-content {
+    padding: 0;
+}
+
+.workspace-leaf-content[data-type='git-history-view'] .view-content {
+    padding: 0;
+}
+
+.loading>svg {
+    animation: 2s linear infinite loading;
+    transform-origin: 50% 50%;
+    display: inline-block;
+}
+
+.obsidian-git-center {
+    margin: auto;
+    text-align: center;
+    width: 50%;
+}
+
+.obsidian-git-textarea {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.obsidian-git-center-button {
+    display: block;
+    margin: 20px auto;
+}
+
+.tooltip.mod-left {
+    overflow-wrap: break-word;
+}
+
+.tooltip.mod-right {
+    overflow-wrap: break-word;
+}
+.git-tools {
+    display: flex;
+    margin-left: auto;
+}
+.git-tools .type {
+    padding-left: var(--size-2-1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 11px;
+}
+
+.git-tools .type[data-type="M"] {
+    color: orange;
+}
+.git-tools .type[data-type="D"] {
+    color: red;
+}
+.git-tools .buttons {
+    display: flex;
+}
+.git-tools .buttons > * {
+    padding: 0 0;
+    height: auto;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-d-none {
+    display: none;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-wrapper {
+    text-align: left;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-header {
+    background-color: var(--background-primary);
+    border-bottom: 1px solid var(--interactive-accent);
+    font-family: var(--font-monospace);
+    height: 35px;
+    padding: 5px 10px;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-header,
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-stats {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-stats {
+    font-size: 14px;
+    margin-left: auto;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-lines-added {
+    border: 1px solid #b4e2b4;
+    border-radius: 5px 0 0 5px;
+    color: #399839;
+    padding: 2px;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-lines-deleted {
+    border: 1px solid #e9aeae;
+    border-radius: 0 5px 5px 0;
+    color: #c33;
+    margin-left: 1px;
+    padding: 2px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-name-wrapper {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 15px;
+    width: 100%;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-name {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-wrapper {
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 3px;
+    margin-bottom: 1em;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-collapse {
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 3px;
+    cursor: pointer;
+    display: none;
+    font-size: 12px;
+    justify-content: flex-end;
+    padding: 4px 8px;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-collapse.d2h-selected {
+    background-color: #c8e1ff;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-collapse-input {
+    margin: 0 4px 0 0;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-diff-table {
+    border-collapse: collapse;
+    font-family: Menlo, Consolas, monospace;
+    font-size: 13px;
+    width: 100%;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-files-diff {
+    width: 100%;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-diff {
+    overflow-y: hidden;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-side-diff {
+    display: inline-block;
+    margin-bottom: -8px;
+    margin-right: -4px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 50%;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-line {
+    padding: 0 8em;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-line,
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-side-line {
+    display: inline-block;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-side-line {
+    padding: 0 4.5em;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-line-ctn {
+    word-wrap: normal;
+    background: none;
+    display: inline-block;
+    padding: 0;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    vertical-align: middle;
+    white-space: pre;
+    width: 100%;
+}
+
+.theme-light .workspace-leaf-content[data-type="diff-view"] .d2h-code-line del,
+.theme-light .workspace-leaf-content[data-type="diff-view"] .d2h-code-side-line del {
+    background-color: #ffb6ba;
+}
+
+.theme-dark .workspace-leaf-content[data-type="diff-view"] .d2h-code-line del,
+.theme-dark .workspace-leaf-content[data-type="diff-view"] .d2h-code-side-line del {
+    background-color: #8d232881;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-line del,
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-line ins,
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-side-line del,
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-side-line ins {
+    border-radius: 0.2em;
+    display: inline-block;
+    margin-top: -1px;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+.theme-light .workspace-leaf-content[data-type="diff-view"] .d2h-code-line ins,
+.theme-light .workspace-leaf-content[data-type="diff-view"] .d2h-code-side-line ins {
+    background-color: #97f295;
+    text-align: left;
+}
+
+.theme-dark .workspace-leaf-content[data-type="diff-view"] .d2h-code-line ins,
+.theme-dark .workspace-leaf-content[data-type="diff-view"] .d2h-code-side-line ins {
+    background-color: #1d921996;
+    text-align: left;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-line-prefix {
+    word-wrap: normal;
+    background: none;
+    display: inline;
+    padding: 0;
+    white-space: pre;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .line-num1 {
+    float: left;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .line-num1,
+.workspace-leaf-content[data-type="diff-view"] .line-num2 {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0 0.5em;
+    text-overflow: ellipsis;
+    width: 3.5em;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .line-num2 {
+    float: right;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-linenumber {
+    background-color: var(--background-primary);
+    border: solid var(--background-modifier-border);
+    border-width: 0 1px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    text-align: right;
+    width: 7.5em;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-linenumber:after {
+    content: "\200b";
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-side-linenumber {
+    background-color: var(--background-primary);
+    border: solid var(--background-modifier-border);
+    border-width: 0 1px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0 0.5em;
+    position: absolute;
+    text-align: right;
+    text-overflow: ellipsis;
+    width: 4em;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-diff-tbody tr {
+    position: relative;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-side-linenumber:after {
+    content: "\200b";
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-side-emptyplaceholder,
+.workspace-leaf-content[data-type="diff-view"] .d2h-emptyplaceholder {
+    background-color: var(--background-primary);
+    border-color: var(--background-modifier-border);
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-line-prefix,
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-linenumber,
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-side-linenumber,
+.workspace-leaf-content[data-type="diff-view"] .d2h-emptyplaceholder {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-linenumber,
+.workspace-leaf-content[data-type="diff-view"] .d2h-code-side-linenumber {
+    direction: rtl;
+}
+
+.theme-light .workspace-leaf-content[data-type="diff-view"] .d2h-del {
+    background-color: #fee8e9;
+    border-color: #e9aeae;
+}
+
+.theme-light .workspace-leaf-content[data-type="diff-view"] .d2h-ins {
+    background-color: #dfd;
+    border-color: #b4e2b4;
+}
+
+.theme-dark .workspace-leaf-content[data-type="diff-view"] .d2h-del {
+    background-color: #521b1d83;
+    border-color: #691d1d73;
+}
+
+.theme-dark .workspace-leaf-content[data-type="diff-view"] .d2h-ins {
+    background-color: rgba(30, 71, 30, 0.5);
+    border-color: #13501381;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-info {
+    background-color: var(--background-primary);
+    border-color: var(--background-modifier-border);
+    color: var(--text-normal);
+}
+
+.theme-light .workspace-leaf-content[data-type="diff-view"] .d2h-file-diff .d2h-del.d2h-change {
+    background-color: #fdf2d0;
+}
+
+.theme-dark .workspace-leaf-content[data-type="diff-view"] .d2h-file-diff .d2h-del.d2h-change {
+    background-color: #55492480;
+}
+
+.theme-light .workspace-leaf-content[data-type="diff-view"] .d2h-file-diff .d2h-ins.d2h-change {
+    background-color: #ded;
+}
+
+.theme-dark .workspace-leaf-content[data-type="diff-view"] .d2h-file-diff .d2h-ins.d2h-change {
+    background-color: rgba(37, 78, 37, 0.418);
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-list-wrapper {
+    margin-bottom: 10px;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-list-wrapper a {
+    color: #3572b0;
+    text-decoration: none;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-list-wrapper a:visited {
+    color: #3572b0;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-list-header {
+    text-align: left;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-list-title {
+    font-weight: 700;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-list-line {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    text-align: left;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-list {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-list>li {
+    border-bottom: 1px solid var(--background-modifier-border);
+    margin: 0;
+    padding: 5px 10px;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-list>li:last-child {
+    border-bottom: none;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-file-switch {
+    cursor: pointer;
+    display: none;
+    font-size: 10px;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-icon {
+    fill: currentColor;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-deleted {
+    color: #c33;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-added {
+    color: #399839;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-changed {
+    color: #d0b44c;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-moved {
+    color: #3572b0;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-tag {
+    background-color: var(--background-primary);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 10px;
+    margin-left: 5px;
+    padding: 0 2px;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-deleted-tag {
+    border: 2px solid #c33;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-added-tag {
+    border: 1px solid #399839;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-changed-tag {
+    border: 1px solid #d0b44c;
+}
+
+.workspace-leaf-content[data-type="diff-view"] .d2h-moved-tag {
+    border: 1px solid #3572b0;
+}
+
+/* ====================== Line Authoring Information ====================== */
+
+.cm-gutterElement.obs-git-blame-gutter {
+    /* Add background color to spacing inbetween and around the gutter for better aesthetics */
+    border-width: 0px 2px 0.2px 2px;
+    border-style: solid;
+    border-color: var(--background-secondary);
+    background-color: var(--background-secondary);
+}
+
+.cm-gutterElement.obs-git-blame-gutter > div, .line-author-settings-preview {
+    /* delegate text color to settings */
+    color: var(--obs-git-gutter-text); 
+    font-family: monospace;
+    height: 100%; /* ensure, that age-based background color occupies entire parent */
+    text-align: right;
+    padding: 0px 6px 0px 6px;
+    white-space: pre; /* Keep spaces and do not collapse them. */
+}
+ @charset "UTF-8";
+
+/** -----------------------------------------------------------------------
+    _____                  _    _ _               _   _ _       _     _   
+    / ____|                | |  | (_)             | \ | (_)     | |   | |  
+   | (___  _ __   __ _ _ __| | _| |_ _ __   __ _  |  \| |_  __ _| |__ | |_ 
+    \___ \| '_ \ / _` | '__| |/ / | | '_ \ / _` | | . ` | |/ _` | '_ \| __|
+    ____) | |_) | (_| | |  |   <| | | | | | (_| | | |\  | | (_| | | | | |_ 
+    |_____/| .__/ \__,_|_|  |_|\_\_|_|_| |_|\__, | |_| \_|_|\__, |_| |_|\__|
+          | |                               __/ |           __/ |          
+          |_|                              |___/           |___/           
+          
+  —— Version 1.0.0
+  —— Made by Isax785
+  Changelog here: 
+------------------------------------------------------------------------- */
+
+/* :root {
+  --default-font: Calibri;
+  --h1-font: Times;
+  --font-monospace: Courier;
+  --code-mono-font:  'OperatorMonoSSmLig-Book';;
+} */
+
+:root {
+    --white: #FCFCFC;
+    --raisin-black: #1B1825;
+    --rich-black: #121019;
+    --dark-purple: #242032;
+    --bright-green: #5AFF15;
+    --tropical-indigo: #8B80F9;
+    --tropical-indigo-light: #A69EFA; 
+    --robin-egg-blue: #19D8D5;
+    --cool-gray: #7C809B;
+    --french-gray : #D1D2DC; /*cool gray light*/
+    --white-smoke: #F5F5F5;
+    --ylmn-blue: #375BA9; 
+    --mint: #13C4A3; 
+    --anti-flash-white: #EBEBEB;
+    --folly: #FF3366;
+  }
+
+.theme-dark {
+    /* Background */
+    --background-primary: var(--rich-black);
+    --background-secondary: var(--raisin-black);
+    --background-secondary-alt: var(--raisin-black);
+    --background-code: var(--grey);
+
+    /* Text */
+    --text-normal: var(--white);
+    --text-accent: var(--atomic-tangerine);
+    --text-selection: var(--tropical-indigo-light);
+    
+    --text-header: var(--tropical-indigo);
+    
+    --h1-color: var(--tropical-indigo);
+    --h1-gradient-start: transparent;
+    --h1-gradient-mid: var(--tropical-indigo);
+    --h1-gradient-end: transparent;
+    
+    --h2-color: var(--tropical-indigo);
+    --h2-gradient-start: var(--tropical-indigo);
+    --h2-gradient-end: transparent;
+
+    --h3-color: var(--tropical-indigo);
+    --h4-color: var(--tropical-indigo);
+    --h5-color: var(--tropical-indigo);
+    --h6-color: var(--tropical-indigo);
+
+    /* bar */
+    --bar-gradient-start: transparent;
+    --bar-gradient-mid: var(--bright-green);
+    --bar-gradient-end: transparent;
+
+    /* bold, Italic, Underline */
+
+    --strong: var(--robin-egg-blue);
+    --italic: var(--robin-egg-blue);
+    --underline-text-color: var(--white);
+    --underline-line-color: var(--bright-green);
+    --underline-line-thickness: 3px;
+
+    /* Code */
+    --codeblock-background: var(--dark-purple);
+    --codeblock-color: var(--white);
+    --inline-code-background: var(--dark-purple);
+    --inline-code-color: var(--bright-green);
+    --code-variable-color: var(--white);
+    --code-function-color: var(--bright-green);
+    --code-builtin-color: var(--tropical-indigo);
+    --code-string-color: var(--robin-egg-blue);
+    --code-operator-color: var(--bright-green);
+    --code-comment-color: var(--cool-gray);
+
+    /* Tags */
+    --tags-background: var(--dark-purple);
+    --tags-color: var(--robin-egg-blue);
+
+    /* List Markers  */
+    --list-marker-color: var(--white);
+    --list-marker-color-hover: var(--bright-green);
+
+    /* Checkboxes */
+    --checkbox-marker-color: var(--white);
+    --radius-s: 2px;
+    --interactive-accent: var(--tropical-indigo); /*marked color*/
+    --checklist-done-color: var(--cool-gray);
+    --checkbox-border-color: var(--cool-gray);
+    --checkbox-border-color-hover: var(--bright-green);
+    --checkbox-color-hover: var(--bright-green);
+
+    /* Quotes */
+    --quote-background: var(--dark-purple);
+    --quote-style: italic;
+
+    /* Links */
+    --link-text-shadow: var(--raisin-black);
+    --link-text-color: var(--white);
+    --link-text-color-hover: var(--tropical-indigo);
+    --link-ext-color: var(--tropical-indigo);
+    --link-int-color: var(--robin-egg-blue);
+    --link-url-text-color: var(--tropical-indigo);
+
+    /* Explorer */
+    --folder-title-color: var(--white);
+    --file-title-color: var(--white);
+    --folder-filter: invert(30%) sepia(99%) saturate(1210%) hue-rotate(51deg) brightness(120%) contrast(100%);
+
+    /* Progress Bar Loading */
+    --progress-bar-color: var(--tropical-indigo);
+}
+
+.theme-light {
+    /* Background */
+    --background-primary: var(--white);
+    --background-secondary: var(--white-smoke);
+    --background-secondary-alt: var(--anti-flash-white);
+    --background-code: var(--anti-flash-white);
+
+    /* Text */
+    --text-normal: var(--rich-black);
+    --text-accent: var(--folly);
+    --text-selection: var(--french-gray);
+    
+    --text-header: var(--ylmn-blu);
+    
+    --h1-color: var(--ylmn-blue);
+    --h1-gradient-start: transparent;
+    --h1-gradient-mid: var(--ylmn-blue);
+    --h1-gradient-end: transparent;
+    
+    --h2-color: var(--ylmn-blue);
+    --h2-gradient-start: var(--ylmn-blue);
+    --h2-gradient-end: transparent;
+
+    --h3-color: var(--ylmn-blue);
+    --h4-color: var(--ylmn-blue);
+    --h5-color: var(--ylmn-blue);
+    --h6-color: var(--ylmn-blue);
+
+    /* bar */
+    --bar-gradient-start: transparent;
+    --bar-gradient-mid: var(--mint);
+    --bar-gradient-end: transparent;
+
+    /* bold, Italic, Underline */
+    --strong: var(--folly);
+    --italic: var(--folly);
+    --underline-text-color: var(--rich-black);
+    --underline-line-color: var(--mint);
+    --underline-line-thickness: 3px;
+
+    /* Code */
+    --codeblock-background: var(--anti-flash-white);
+    --codeblock-color: var(--rich-black);
+    --inline-code-background: var(--anti-flash-white);
+    --inline-code-color: var(--tropical-indigo);
+    --code-variable-color: var(--rich-black);
+    --code-function-color: var(--mint);
+    --code-builtin-color: var(--mint);
+    --code-string-color: var(--folly);
+    --code-operator-color: var(--mint);
+    --code-comment-color: var(--cool-gray);
+
+    /* Tags */
+    --tags-background: var(--anti-flash-white);
+    --tags-color: var(--folly);
+
+    /* List Markers  */
+    --list-marker-color: var(--rich-black);
+    --list-marker-color-hover: var(--mint);
+
+    /* Checkboxes */
+    --checkbox-marker-color: var(--white);
+    --radius-s: 2px;
+    --interactive-accent: var(--ylmn-blue); /*marked color*/
+    --checklist-done-color: var(--cool-gray);
+    --checkbox-border-color: var(--rich-black);
+    --checkbox-border-color-hover: var(--mint);
+    --checkbox-color-hover: var(--mint);
+
+    /* Quotes */
+    --quote-background: var(--anti-flash-white);
+    --quote-style: italic;
+
+    /* Links */
+    --link-text-shadow: var(--white);
+    --link-text-color: var(--rich-black);
+    --link-text-color-hover: var(--mint);
+    --link-ext-color: var(--mint);
+    --link-int-color: var(--tropical-indigo);
+    --link-url-text-color: var(--tropical-indigo);
+
+    /* Explorer */
+    --folder-title-color: var(--raisin-black);
+    --file-title-color: var(--rich-black);
+    --folder-filter: invert(55%) sepia(90%) saturate(407%) hue-rotate(119deg) brightness(94%) contrast(91%);
+
+    /* Progress Bar Loading */
+    --progress-bar-color: var(--mint);
+}
+
+/* ----------- Font ----------- */
+
+/* working progress */
+
+/* ----------- Text ----------- */
+
+.markdown-source-view.mod-cm6 .cm-line {    
+    padding-top: 0em;
+    padding-bottom: 0.3em;
+}
+
+/* ----------- Titles ----------- */
+
+/* .cm-header.cm-header-1, */
+.HyperMD-header-1, h1 {
+    text-align: center;
+    width: 100%;
+    border-bottom: 0.1em solid transparent;
+    border-image: linear-gradient(0.25turn, 
+                                  var(--h1-gradient-start) 5%, 
+                                  var(--h1-gradient-mid) 50%,
+                                  var(--h1-gradient-end) 96%);
+    border-radius: 3px;
+    border-image-slice: 1;
+    padding: 3px;
+}
+
+/* .cm-header.cm-header-2,  */
+.HyperMD-header-2, h2 {
+    text-align: left;
+    width: 100%;
+    border-bottom: 0.05em solid transparent;
+    border-image: linear-gradient(0.25turn, 
+                                  var(--h2-gradient-start) 0%,
+                                  var(--h2-gradient-end) 60%);
+    border-radius: 3px;
+    border-image-slice: 1;
+    /* padding: 2px; */
+}
+
+/* ----------- Bar ----------- */
+
+.cm-line hr,
+.markdown-preview-view hr {
+  margin-block-start: 1em;
+  margin-block-end: 1.2em;
+  border: none;
+  height: 0;
+  border-bottom: 1px solid;
+  border-image-slice: 1;
+  border-width: 0.1em;
+  border-image-source: linear-gradient(0.25turn, 
+                                       var(--bar-gradient-start) 2%, 
+                                       var(--bar-gradient-mid) 50%,
+                                       var(--bar-gradient-end) 98%);
+}
+
+/* ----------- Spellcheck Error ----------- */
+.CodeMirror .cm-spell-error { /*not working*/
+    background-image: #5AFF15;
+}
+
+/* ----------- Lists ----------- */
+
+.mod-cm6 .HyperMD-list-line.cm-line {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* ordered */
+ol,
+ol ol,
+ol ol ol,
+ol ol ol ol
+{
+    list-style-type: lower-roman;
+}
+
+/* unordered */
+ul,
+ul ul,
+ul ul ul {
+    list-style-type: square;
+}
+/* ----------- Bold, Italic, Underline ----------- */
+
+.cm-strong, strong {
+    color: var(--strong) !important;
+}
+
+.cm-em, em,
+.cm-em cm-quote cm-quote-1
+ {
+    color: var(--italic);
+}
+
+/* ----------- Code - Code Block ----------- */
+
+pre code { 
+    background-color: var(--codeblock-background) !important;
+    border: var(--codeblock-background) !important;
+}
+
+pre[class*="language-"], 
+code[class*="language-"]
+{
+    background: var(--codeblock-background);
+    color: var(--codeblock-color)!important;
+}
+
+.cm-s-obsidian div.HyperMD-codeblock-begin-bg, 
+.cm-s-obsidian div.HyperMD-codeblock-end-bg {
+    background-color: var(--codeblock-background);
+}
+
+.cm-s-obsidian div.HyperMD-codeblock-bg {
+    left: 0;
+    right: 0;
+    background-color: var(--codeblock-background);
+}
+
+.cm-inline-code{
+    background-color: var(--inline-code-background)!important;
+    color: var(--inline-code-color)!important;
+    font-size: 0.9rem!important;
+    padding: 3px 4px;
+    border-radius: 5px;
+}
+
+.markdown-rendered code {
+    background-color: var(--codeblock-background)!important;
+    /* color: var(--white); */
+    color: var(--inline-code-color);
+    font-size: 0.9rem;
+    padding: 3px 4px;
+    border-radius: 5px;
+}
+
+/* code styling */
+
+.cm-link, .cm-variable, .cm-variable-2, .cm-variable-3 {color: var(--code-variable-color)!important;} /* variable */
+.cm-def.cm-hmd-codeblock, .token.function{
+    color: var(--code-function-color)!important;
+    text-emphasis: italic;
+} /* function name in declaration */
+.cm-builtin, .cm-property, .cm-attribute, .cm-type, .cm-keyword, .token.keyword, .token.builtin, .token.property {color: var(--code-builtin-color)!important;} /* built-in functions, methods */
+.cm-hmd-codeblock.cm-string, .cm-hmd-codeblock.cm-number, .token.string, .token.number {color: var(--code-string-color)!important;} /* strings and numbers */
+.cm-operator, .token.operator {color: var(--code-operator-color)!important;} /* operators */
+.cm-hmd-codeblock {color: var(--codeblock-color);} /* codeblock */
+.cm-comment, .token.comment {color: var(--code-comment-color)!important;} /* comment */
+
+
+/* ----------- Tags ----------- */
+
+.cm-s-obsidian span.cm-hashtag, .tag
+{
+    background-color: var(--tags-background)!important;
+    color: var(--tags-color)!important;
+    font-weight: bold;
+    padding: 5px 5px;
+    border-radius: 6px;
+}
+
+/* ----------- Quotes ----------- */
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote, .markdown-rendered blockquote {
+    font-style: var(--quote-style);
+    font-size: 0.9em;
+    background-color: var(--quote-background);
+    padding-top: 0.3em;
+    padding-bottom: 0.4em;
+}
+
+/* ----------- Underline ----------- */
+
+u {
+    color: var(--underline-text-color);
+    text-decoration-color: var(--underline-line-color);
+    text-decoration-thickness: var(--underline-line-thickness);
+}
+
+/* ----------- Links ----------- */
+
+.external-link, .internal-link,
+ .cm-s-obsidian span.cm-link:not(.cm-formatting-link) .cm-underline,
+.cm-s-obsidian span.cm-hmd-internal-link .cm-underline {
+  text-shadow: -1px -1px 2px var(--link-text-shadow), -1px 1px 2px var(--link-text-shadow),
+    1px -1px 2px var(--link-text-shadow), 1px 1px 2px var(--link-text-shadow);
+  color: var(--link-text-color);
+  background-position: 0 100%;
+  background-repeat: repeat-x;
+  background-size: 5px 5px;
+  text-decoration: none;
+  padding-right: 0;
+}
+
+.external-link,
+.cm-s-obsidian span.cm-link:not(.cm-formatting-link) .cm-underline,
+.cm-s-obsidian span.cm-hmd-external-link .cm-underline
+{
+    background-image: linear-gradient(
+      to bottom,
+      var(--link-ext-color) 0%,
+      var(--link-ext-color) 100%
+    );
+  }
+
+.internal-link, 
+/* .cm-s-obsidian span.cm-link:not(.cm-formatting-link) .cm-underline, */
+.cm-s-obsidian span.cm-hmd-internal-link .cm-underline
+  {
+    background-image: linear-gradient(
+      to bottom,
+      var(--link-int-color) 0%,
+      var(--link-int-color) 100%
+      );
+    text-decoration: none!important;
+  }
+
+  /* link hover color */
+a:hover,
+.internal-link:hover,
+.external-link:hover,
+.cm-underline:hover {
+  text-decoration: none !important;
+  color: var(--link-text-color-hover);
+}
+
+.cm-s-obsidian span.cm-url {
+    color: var(--link-url-text-color)!important;
+    background-image: none!important;
+    background-color: transparent!important;
+    /* text-decoration: double!important; */
+}
+
+/* ----------- Images ----------- */
+
+img {display:block;
+     margin-left:auto;
+     margin-right:auto;}
+
+.markdown-preview-view img {
+    display: block;
+    margin-top: 20pt;
+    margin-bottom: 20pt;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;  /* experiment with values */
+    transition:transform 0.25s ease;
+  }
+  
+  .markdown-preview-view img:hover {
+      -webkit-transform:scale(1); /* experiment with values */
+      transform:scale(1.4);
+  }
+
+/* ----------- File Explorer ----------- */
+
+.nav-folder-children .nav-file-title-content:first-child::before 
+{ 
+    content: '📄 '; 
+    /* filter: invert(57%) sepia(90%) saturate(200%) hue-rotate(215deg) brightness(120%) contrast(96%); */
+}
+
+.nav-folder-children .nav-folder-title-content::before 
+{ 
+    content: '📁 '; 
+    margin-right: 0px !important;
+}
+
+.nav-folder-title-content
+{
+    color: var(--folder-title-color);
+}
+
+.nav-file-title-content
+{
+    color: var(--file-title-color);
+}
+
+.nav-folder-title-content::before {
+    font-size: 13px;
+    /* how to get CSS filter ? 
+    0, open website: https://www.zhangxinxu.com/sp/filter.html
+    1, first: image original color this is :  #000
+    2, second: display color   i want : #D6FFF1
+    3, CSS filter trans btn clik:  the result is :
+      filter: invert(99%) sepia(90%) saturate(382%) hue-rotate(69deg) brightness(106%) contrast(102%);
+    4, pause👇  : OK ✌️;
+    */
+    
+    /* filter to --bright-green: invert(72%) sepia(99%) saturate(1210%) hue-rotate(51deg) brightness(107%) contrast(107%); */
+    /* filter: invert(30%) sepia(99%) saturate(1210%) hue-rotate(51deg) brightness(120%) contrast(100%); */
+    filter: var(--folder-filter);
+  
+    /*
+      /* If you want to change the icon, you only need to modify this code.you can only change d=''
+    */
+  
+    content: url("data:image/svg+xml;charset=UTF-8, <svg xmlns='http://www.w3.org/2000/svg' version='1.1' viewBox='0 0 100 100' width='17' height='17'><path  fill='currentColor' stroke='currentColor'  d='M6.1,8c-3.3,0-6,2.7-6,6v73.8c-0.1,0.5-0.1,0.9,0.1,1.4c0.6,2.7,3,4.8,5.9,4.8h78c3,0,5.4-2.2,5.9-5.1 c0-0.1,0.1-0.2,0.1-0.4c0,0,0-0.1,0-0.1l0.1-0.3c0,0,0,0,0-0.1l9.9-53.6l0.1-0.2V34c0-3.3-2.7-6-6-6v-6c0-3.3-2.7-6-6-6H36.1 c0,0,0,0-0.1,0c-0.1,0-0.2-0.2-0.6-0.6c-0.5-0.6-1.1-1.5-1.7-2.5c-0.6-1-1.3-2.1-2.1-3C30.9,9,29.7,8,28.1,8L6.1,8z M6.1,12h22 c-0.1,0,0.1,0,0.6,0.6c0.5,0.6,1.1,1.5,1.7,2.5c0.6,1,1.3,2.1,2.1,3c0.8,0.9,1.9,1.9,3.6,1.9h52c1.1,0,2,0.9,2,2v6h-74 c-3.1,0-5.7,2.5-5.9,5.6h-0.1L10.1,34l-6,32.4V14C4.1,12.9,4.9,12,6.1,12z M16.1,32h78c1.1,0,2,0.9,2,2l-9.8,53.1l-0.1,0.1 c0,0.1,0,0.2-0.1,0.2c0,0.1,0,0.2-0.1,0.2c0,0,0,0.1,0,0.1c0,0,0,0,0,0.1c0,0.1,0,0.2-0.1,0.3c0,0.1,0,0.1,0,0.2 c0,0.1,0,0.2,0,0.2c-0.3,0.8-1,1.4-1.9,1.4h-78c-1.1,0-2-0.9-2-2L14,34.4l0.1-0.2V34C14.1,32.9,14.9,32,16.1,32L16.1,32z'/></svg>"); 
+
+    margin-right: 7px !important;
+  }
+
+/* ----------- Progress Bar Loading ----------- */
+
+  .progress-bar-subline {
+    position: absolute;
+    background-color: var(--progress-bar-color);
+    height: 5px;
+  }
+  
+  .progress-bar-line {
+    position: absolute;
+    opacity: 0.4;
+    background-color: var(--progress-bar-color);
+    width: 150%;
+    height: 5px;
+  } .CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+ .CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+ .CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+undefined
+</style>
+    </head>
+    <body>
+<h1 data-heading="Basic CNI">Basic CNI</h1>
+<p>一開始先跟大家介紹一些大家應該都沒聽過的&nbsp;<code>CNI Plugin</code></p>
+<ol>
+<li>bridge</li>
+<li>host-device</li>
+<li>ipvlan</li>
+<li>macvlan</li>
+<li>ptp</li>
+<li>vlan</li>
+<li>loopback</li>
+</ol>
+<p>這些&nbsp;<code>CNI Plugin</code>&nbsp;都是由&nbsp;<code>CNI</code>&nbsp;專案所提供的基本功能，其目的非常簡單，就是提供最簡單且單一的網路架構。</p>
+<p>以&nbsp;<code>Bridge</code>&nbsp;為範例，就是一個透過&nbsp;<code>Linux Bridge</code>&nbsp;將容器與宿主機給串連起來的方式，除此之外就沒有任何功能了。</p>
+<p>而&nbsp;<code>ptp</code>&nbsp;就是一個簡單的&nbsp;<code>Point to Point</code>&nbsp;的架構，中間甚至連虛擬交換機都沒有，單純的透過&nbsp;<code>veth</code>&nbsp;將容器與宿主機連接再一起。</p>
+<p>但是&nbsp;<code>CNI</code>&nbsp;迷人的地方就在於這些功能的整合，每個&nbsp;<code>CNI</code>&nbsp;專注於一個簡單的功能，彼此又互相整合來完成各式各樣的強大功能。</p>
+<p>有興趣的話可以參閱一下&nbsp;<a data-tooltip-position="top" aria-label="https://github.com/containernetworking/plugins/tree/master/plugins/main" rel="noopener" class="external-link" href="https://github.com/containernetworking/plugins/tree/master/plugins/main" target="_blank">containernetworking/plugins</a></p>
+<h1 data-heading="[](https://www.hwchiu.com/cni-compare.html#Flannel &quot;Flannel&quot;)Flannel"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Flannel" rel="noopener" class="external-link" title="Flannel" href="https://www.hwchiu.com/cni-compare.html#Flannel" target="_blank"></a>Flannel</h1>
+<p><code>Flannel</code>&nbsp;我覺得應該是&nbsp;<code>CNI Plugin</code>&nbsp;裡面頂級出名的，幾乎各種教學文件都可以看到使用&nbsp;<code>Flannel</code>&nbsp;作為基本的&nbsp;<code>CNI Pugin</code>. 其實從&nbsp;<code>Flannel</code>&nbsp;的功能面以及安裝性來說，我認為&nbsp;<code>Flannel</code>&nbsp;非常簡單且已經可以滿足大部分安裝者的基本需求。</p>
+<p>此外，<code>Flannel</code>&nbsp;其實背後則是會呼叫&nbsp;<code>Bridge</code>&nbsp;這個&nbsp;<code>CNI</code>&nbsp;來幫忙建立基本的&nbsp;<code>Veth/Bridge</code>&nbsp;等功能，自己則是專注於&nbsp;<code>Overlay Network</code>&nbsp;的管理。</p>
+<p>我們從兩個面向來看&nbsp;<code>Flannel</code>&nbsp;的特色</p>
+<h2 data-heading="[](https://www.hwchiu.com/cni-compare.html#Installation &quot;Installation&quot;)Installation"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Installation" rel="noopener" class="external-link" title="Installation" href="https://www.hwchiu.com/cni-compare.html#Installation" target="_blank"></a>Installation</h2>
+<p><code>Flannel</code>&nbsp;安裝非常簡單，實際上只需要部屬一個&nbsp;<code>Yaml</code>&nbsp;檔案即可。<br>
+該&nbsp;<code>Yaml</code>&nbsp;裡面其實會牽扯到不少元件，譬如&nbsp;<code>DaemonSet</code>,&nbsp;<code>InitContainer</code>&nbsp;等許多有趣的玩法，這邊就不再贅述，有興趣的可以想想看一個問題</p>
+<p>你要如何讓任何加入到k8s的新節點都能夠自動安裝 CNI 需要的 binary 以及 config ?</p>
+<h2 data-heading="[](https://www.hwchiu.com/cni-compare.html#Features &quot;Features&quot;)Features"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Features" rel="noopener" class="external-link" title="Features" href="https://www.hwchiu.com/cni-compare.html#Features" target="_blank"></a>Features</h2>
+<p><code>Flannel</code>&nbsp;功能非常簡單，就是且只有&nbsp;<code>Overlay Network</code>，目標是提供<code>Pod</code>與<code>Pod</code>之間跨節點的溝通，提供 Layer3 IPv4 的能力來處理節點與節點之間傳輸的辦法。<br>
+目前其採用的實作方式有</p>
+<ol>
+<li>VXLAN</li>
+<li>UDP 封裝</li>
+<li>Host-GW 靜態路由設定</li>
+</ol>
+<p>詳細的實作內容請參閱<a data-tooltip-position="top" aria-label="https://github.com/coreos/flannel/blob/master/Documentation/backends.md" rel="noopener" class="external-link" href="https://github.com/coreos/flannel/blob/master/Documentation/backends.md" target="_blank">GitHub Flannel</a></p>
+<h1 data-heading="[](https://www.hwchiu.com/cni-compare.html#Calico &quot;Calico&quot;)Calico"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Calico" rel="noopener" class="external-link" title="Calico" href="https://www.hwchiu.com/cni-compare.html#Calico" target="_blank"></a>Calico</h1>
+<p>另外一個也是非常知名的&nbsp;<code>CNI Plugin</code>&nbsp;就是&nbsp;<code>Calico</code>, 相對於&nbsp;<code>Flannel</code>&nbsp;來說，&nbsp;<code>Calico</code>&nbsp;提供的功能則相對的多，而這些功能與特色都能夠對應不同的網路環境。</p>
+<p><code>Calico</code>&nbsp;專案的開發相對於&nbsp;<code>Flannel</code>&nbsp;來得更加活躍且也不停的有各種功能出現，畢竟相對於&nbsp;<code>Flannel</code>&nbsp;單純想提供<code>Pod x Pod</code>&nbsp;連線功能來說，&nbsp;<code>Calico</code>&nbsp;想提供的則是更多的功能，自然而然的發展就會比較廣且活躍。</p>
+<h2 data-heading="[](https://www.hwchiu.com/cni-compare.html#Installation-1 &quot;Installation&quot;)Installation"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Installation-1" rel="noopener" class="external-link" title="Installation" href="https://www.hwchiu.com/cni-compare.html#Installation-1" target="_blank"></a>Installation</h2>
+<p>安裝方便基本上可以很簡單，如同&nbsp;<code>Flannel</code>&nbsp;一樣透過一個&nbsp;<code>Yaml</code>&nbsp;就可以安裝基本的&nbsp;<code>CNI</code>&nbsp;資源到 Kubernetes 叢集中。此外也可以很複雜到需要安裝非常多的東西來提供更進階的功能。&nbsp;<code>這部分取決於你想要採用的功能</code>。</p>
+<p>舉例來說，如何建立存放&nbsp;<code>Calico</code>&nbsp;各節點溝通的資料就有兩種</p>
+<ol>
+<li>etcd</li>
+<li>kubernetes API</li>
+</ol>
+<p>詳細的安裝教學可以參閱<a data-tooltip-position="top" aria-label="https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/" rel="noopener" class="external-link" href="https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/" target="_blank">官網</a></p>
+<h2 data-heading="[](https://www.hwchiu.com/cni-compare.html#Features-1 &quot;Features&quot;)Features"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Features-1" rel="noopener" class="external-link" title="Features" href="https://www.hwchiu.com/cni-compare.html#Features-1" target="_blank"></a>Features</h2>
+<p><code>Calico</code>&nbsp;支援的平台非常多種，本身支援&nbsp;<code>CNI</code>&nbsp;介面使得支援&nbsp;<code>CNI</code>&nbsp;的平台都可以使用外，其也可以透過&nbsp;<code>Neutron Plugin</code>&nbsp;的方式安裝於&nbsp;<code>OpenStack</code>&nbsp;的環境中，算是我目前看到支援度非常豐富的網路功能解決方案</p>
+<p>在其功能方面，基本上主要以&nbsp;<code>kubernetes</code>&nbsp;該平台能夠提供的功能來探討，可以分成兩個面向來看，分別是&nbsp;<code>Policy</code>&nbsp;以及&nbsp;<code>Network</code>。</p>
+<h3 data-heading="[](https://www.hwchiu.com/cni-compare.html#Policy &quot;Policy&quot;)Policy"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Policy" rel="noopener" class="external-link" title="Policy" href="https://www.hwchiu.com/cni-compare.html#Policy" target="_blank"></a>Policy</h3>
+<ol>
+<li>Network Policy<br>
+實際上，<code>Kubernetes</code>&nbsp;本身有定義&nbsp;<code>Network Policy</code>&nbsp;的介面，但是實際上卻沒有實現這種能夠用來限制&nbsp;<code>Pod</code>&nbsp;與&nbsp;<code>Pod</code>&nbsp;之間連線的功能。 官網明確的說明這部分的實現要依賴&nbsp;<code>CNI Plugin</code>&nbsp;來處理。<br>
+而&nbsp;<code>Calico</code>&nbsp;就有實現這種介面，因此可以直接使用&nbsp;<code>Kubernetes Network Policy</code>&nbsp;的規範去設定相對應的&nbsp;<code>Yaml</code>&nbsp;來實現基本的<code>ACL (Access Control List)</code></li>
+<li>Application Layer Policy<br>
+相對於基本的&nbsp;<code>Kubernetes Network Policy</code>&nbsp;外，&nbsp;<code>Calico</code>&nbsp;本身透過&nbsp;<code>Kubernetes CustomResourceDefinetion(CRD)</code>&nbsp;提供了另外一層新的&nbsp;<code>GlobalNetworkPolicy</code>.<br>
+該介面提供了基於&nbsp;<code>HTTP</code>&nbsp;方法或是路徑為基準的&nbsp;<code>ACL</code>，本身的實現是透過&nbsp;<code>Service Mesh</code>&nbsp;的方式來進行&nbsp;<code>ACL</code>&nbsp;的處理，因此本身會依賴&nbsp;<code>lstio</code>&nbsp;的系統。在安裝上會需要更多的操作以及設定的細節來開啟此功能。</li>
+</ol>
+<h3 data-heading="[](https://www.hwchiu.com/cni-compare.html#Network &quot;Network&quot;)Network"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Network" rel="noopener" class="external-link" title="Network" href="https://www.hwchiu.com/cni-compare.html#Network" target="_blank"></a>Network</h3>
+<ol>
+<li>Overlay Network.<br>
+<code>Calico</code>&nbsp;對於網路連線方面也有提供類似&nbsp;<code>Flannel</code>&nbsp;的功能，透過&nbsp;<code>VXLAN</code>&nbsp;或是&nbsp;<code>IP in IP</code>&nbsp;這類型的協定來封裝連線封包已達到&nbsp;<code>Overlay Network</code>&nbsp;的需求</li>
+<li>Native Routing<br>
+除了上述的&nbsp;<code>Overlay Network</code>&nbsp;之外，&nbsp;<code>Calico</code>&nbsp;最主打的就是第二種網路，完完全全的&nbsp;<code>Underlay Network</code>, 不依賴任何的封包封裝協定。<br>
+<code>Calico</code>&nbsp;的想法很簡單，雖然&nbsp;<code>Overlay Network</code>&nbsp;很方便，但是實際上每次的封包封裝都會增加整體封包的複雜度，同時也會增加封包的處理時間。<br>
+因此&nbsp;<code>Calico</code>&nbsp;透過&nbsp;<code>IPTables</code>&nbsp;以及&nbsp;<code>Routing Table</code>&nbsp;的方式來處理&nbsp;<code>Layer3</code>路由的問題，讓不同節點之間的&nbsp;<code>Pod</code>&nbsp;可以透過&nbsp;<code>Routing Table</code>&nbsp;的方式直接互相連間而不需要再包覆一層額外的標頭檔來處理封包。</li>
+</ol>
+<p>這部分的原理牽扯到&nbsp;<code>Layer3</code>&nbsp;路由以及相關閘道的&nbsp;<code>MAC address</code>&nbsp;的原理，有興趣的可以參考官方說明<br>
+<a data-tooltip-position="top" aria-label="https://docs.projectcalico.org/v3.3/reference/architecture/data-path" rel="noopener" class="external-link" href="https://docs.projectcalico.org/v3.3/reference/architecture/data-path" target="_blank">The Calico Data Path: IP Routing and iptables</a></p>
+<ol start="3">
+<li>Public IP Address Assignment<br>
+<code>Calico</code>&nbsp;有額外自行開發一套&nbsp;<code>IPAM</code>&nbsp;來管理&nbsp;<code>IP</code>&nbsp;及分配，在此架構中所有的&nbsp;<code>IP</code>&nbsp;都會從&nbsp;<code>IP Pool</code>&nbsp;中去取得。</li>
+</ol>
+<p>同時搭配&nbsp;<code>BGP</code>&nbsp;等動態路由協定的幫忙，所有的&nbsp;<code>Pod</code>&nbsp;都可以被賦予一個可被存取的&nbsp;<code>Public IP</code>&nbsp;地址，同時這些&nbsp;<code>Pod</code>&nbsp;在對外進行存取的時候也不需要進行&nbsp;<code>NAT</code>&nbsp;的轉換，可減少一次封包轉換所造成的效能耗損</p>
+<h1 data-heading="[](https://www.hwchiu.com/cni-compare.html#Canal &quot;Canal&quot;)Canal"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Canal" rel="noopener" class="external-link" title="Canal" href="https://www.hwchiu.com/cni-compare.html#Canal" target="_blank"></a>Canal</h1>
+<p><code>Canal</code>&nbsp;是一個比較特別的&nbsp;<code>CNI Plugin</code>, 其目的在於整合&nbsp;<code>Flannel</code>&nbsp;以及&nbsp;<code>Calico</code>&nbsp;這兩個&nbsp;<code>CNI Plugin</code>. 希望使用&nbsp;<code>Calico</code>&nbsp;的&nbsp;<code>Network Policy</code>&nbsp;功能以及&nbsp;<code>Flannel</code>&nbsp;的&nbsp;<code>Overlay Network</code>&nbsp;功能。</p>
+<p>因此整體上並沒有什麼特別獨特的功能，不過隨者時間演進，目前&nbsp;<code>Canal</code>&nbsp;專案也有大變化。</p>
+<p>從&nbsp;<code>Canal</code>&nbsp;於&nbsp;<a data-tooltip-position="top" aria-label="https://github.com/projectcalico/canal" rel="noopener" class="external-link" href="https://github.com/projectcalico/canal" target="_blank">Github canal</a>&nbsp;官網上面可以看到該專案在&nbsp;<a data-tooltip-position="top" aria-label="https://github.com/projectcalico/canal/commit/54b58775578f0e3a306d9f2706e4d9b829fb7562#diff-04c6e90faac2675aa89e2176d2eec7d8" rel="noopener" class="external-link" href="https://github.com/projectcalico/canal/commit/54b58775578f0e3a306d9f2706e4d9b829fb7562#diff-04c6e90faac2675aa89e2176d2eec7d8" target="_blank">Jan 27,2018</a>&nbsp;更新了說明來表示該專案已經停止開發，目前已經可以直接在&nbsp;<code>Calico</code>&nbsp;的官網直接看到&nbsp;<code>Calico</code>&nbsp;與&nbsp;<code>Flannel</code>&nbsp;的整合方法以及安裝方式，因此&nbsp;<code>Canal</code>&nbsp;這個獨立的&nbsp;<code>CNI Plugin</code>&nbsp;基本上已經沒有需要使用的必要了。</p>
+<h1 data-heading="[](https://www.hwchiu.com/cni-compare.html#Nuage &quot;Nuage&quot;)Nuage"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Nuage" rel="noopener" class="external-link" title="Nuage" href="https://www.hwchiu.com/cni-compare.html#Nuage" target="_blank"></a>Nuage</h1>
+<p><code>Nuage</code>&nbsp;是一個基於&nbsp;<code>SDN</code>&nbsp;概念開發的<code>CNI Plugin</code>，基底層使用了&nbsp;<code>OpenvSwitch</code>&nbsp;作為軟體交換機，同時使用了&nbsp;<code>OpenFlow</code>&nbsp;此協定來控制&nbsp;<code>OpenvSwitch</code>.<br>
+此外，為了能夠更加聰明有智慧的去透過&nbsp;<code>OpenFlow</code>&nbsp;控制&nbsp;<code>OpenvSwitch</code>, 也必須要有一個&nbsp;<code>OpenFlow Controller VSC</code>&nbsp;來作為一個中央控管的管理者。</p>
+<h2 data-heading="[](https://www.hwchiu.com/cni-compare.html#Feature &quot;Feature&quot;)Feature"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Feature" rel="noopener" class="external-link" title="Feature" href="https://www.hwchiu.com/cni-compare.html#Feature" target="_blank"></a>Feature</h2>
+<p><code>Nugae</code>&nbsp;本身在網路連線方面，也有提供基於&nbsp;<code>VXLAN</code>&nbsp;協定的&nbsp;<code>Overlay Network</code>&nbsp;的應用。這部分應該是直接利用&nbsp;<code>OpenvSwitch</code>&nbsp;本身提供的&nbsp;<code>VXLAN</code>&nbsp;功能來完成。<br>
+此外針對&nbsp;<code>Nuage</code>&nbsp;也有實現&nbsp;<code>Network Policy</code>, 其原理就是透過&nbsp;<code>Openflow</code>&nbsp;的規則下發到所有的&nbsp;<code>OpenvSwitch</code>&nbsp;來達到&nbsp;<code>Pod</code>&nbsp;與&nbsp;<code>Pod</code>&nbsp;之間的傳輸規則隔離。</p>
+<p>下圖是一個簡單的示意圖來解釋&nbsp;<code>Network Policy</code>&nbsp;的運作原理，大致上就是當使用者透過&nbsp;<code>Client API</code>&nbsp;去寫入&nbsp;<code>Network Policy</code>&nbsp;的規則後，這些規則最後會被相關的應用程式給解讀並且轉達給&nbsp;<code>VSC, SDN Controller</code>，最後&nbsp;<code>VSC</code>&nbsp;會把該規則對應到的資訊透過&nbsp;<code>OpenFlow</code>&nbsp;的方式寫入到對應的節點上面的&nbsp;<code>OpenvSwitch</code>&nbsp;上來達到 ACL 的功能。</p>
+<h1 data-heading="Ciliunm">Ciliunm</h1>
+<p><code>Ciliunm</code>&nbsp;最厲害也是最主打的功能並不是網路方面的連接，反而是安全性以及平衡附載特點。<br>
+在其實作中採用了&nbsp;<code>eBPF</code>&nbsp;以及&nbsp;<code>XDP</code>&nbsp;這兩種這幾年逐漸受到重視的技術來處理封包。連線的封包能夠在網卡收到但是尚未送到&nbsp;<code>Kernel</code>&nbsp;前就先行處理，因此有更早期且更快速的效率來處理封包。</p>
+<p>接下來就針對其各個特色功能來介紹</p>
+<h2 data-heading="[](https://www.hwchiu.com/cni-compare.html#Networking &quot;Networking&quot;)Networking"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Networking" rel="noopener" class="external-link" title="Networking" href="https://www.hwchiu.com/cni-compare.html#Networking" target="_blank"></a>Networking</h2>
+<p>網路連線方面提供兩種功能，<code>Overlay Network</code>&nbsp;以及&nbsp;<code>Native Routing</code>.</p>
+<ol>
+<li>Overlay Network<br>
+<code>Overlay Network</code>&nbsp;本身也是依賴&nbsp;<code>VXLAN</code>&nbsp;以及&nbsp;<code>Geneve</code>&nbsp;這些已知的協定來處理，<code>Ciliunm</code>&nbsp;直接使用&nbsp;<code>Kernel</code>&nbsp;相關的功能來達到這些封裝效果，因此其支援度以及支援性則是依賴於使用的&nbsp;<code>Kernel</code>&nbsp;版本。</li>
+<li>Native Routing<br>
+這個比較偏向給進階使用者使用的，叢集管理者必須要知道這方面的概念同時也要確保相關的&nbsp;<code>Routing Table</code>&nbsp;是可以運行的，同時也可以使用&nbsp;<code>OSPF/BGP</code>&nbsp;等相關的應用程式來輔助。<br>
+詳細的可以參考<a data-tooltip-position="top" aria-label="https://cilium.readthedocs.io/en/v1.2/concepts/#direct-native-routing-mode" rel="noopener" class="external-link" href="https://cilium.readthedocs.io/en/v1.2/concepts/#direct-native-routing-mode" target="_blank">Ciliunm Concepts</a></li>
+<li>Load Balacing<br>
+負載平衡方面，<code>Cilium</code>&nbsp;則使用了&nbsp;<code>BPF</code>&nbsp;的架構並且透過&nbsp;<code>Hashing</code>&nbsp;的方式來幫忙決定該連線最後的目標節點，</li>
+</ol>
+<h2 data-heading="[](https://www.hwchiu.com/cni-compare.html#Network-Policy &quot;Network Policy&quot;)Network Policy"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Network-Policy" rel="noopener" class="external-link" title="Network Policy" href="https://www.hwchiu.com/cni-compare.html#Network-Policy" target="_blank"></a>Network Policy</h2>
+<p><code>Ciluum</code>&nbsp;除了實現了&nbsp;<code>Kubernetes Network Policy</code>&nbsp;這種基於&nbsp;<code>Layer4/Layer3</code>&nbsp;的防火牆外，本身也有額外實現了&nbsp;<code>Layer 7</code>&nbsp;的防火牆。<br>
+在&nbsp;<code>Layer7</code>&nbsp;方面支援了下列的協定</p>
+<ul>
+<li>REST/HTTP</li>
+<li>gRPC</li>
+<li>Kafka<br>
+已&nbsp;<code>Kafka</code>&nbsp;來說，可以使用下列的&nbsp;<code>Yaml</code>&nbsp;來描述相關的防火牆規則</li>
+</ul>
+<pre class="language-yaml" tabindex="0"><code class="is-loaded language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> <span class="token string">"cilium.io/v2"</span>  
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> CiliumNetworkPolicy  
+<span class="token key atrule">description</span><span class="token punctuation">:</span> <span class="token string">"enable empire-hq to produce to empire-announce and deathstar-plans"</span>  
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>  
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">"rule1"</span>  
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>  
+  <span class="token key atrule">endpointSelector</span><span class="token punctuation">:</span>  
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>  
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> kafka  
+  <span class="token key atrule">ingress</span><span class="token punctuation">:</span>  
+  <span class="token punctuation">-</span> <span class="token key atrule">fromEndpoints</span><span class="token punctuation">:</span>  
+    <span class="token punctuation">-</span> <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>  
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> empire<span class="token punctuation">-</span>hq  
+    <span class="token key atrule">toPorts</span><span class="token punctuation">:</span>  
+    <span class="token punctuation">-</span> <span class="token key atrule">ports</span><span class="token punctuation">:</span>  
+      <span class="token punctuation">-</span> <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token string">"9092"</span>  
+        <span class="token key atrule">protocol</span><span class="token punctuation">:</span> TCP  
+      <span class="token key atrule">rules</span><span class="token punctuation">:</span>  
+        <span class="token key atrule">kafka</span><span class="token punctuation">:</span>  
+        <span class="token punctuation">-</span> <span class="token key atrule">role</span><span class="token punctuation">:</span> <span class="token string">"produce"</span>  
+          <span class="token key atrule">topic</span><span class="token punctuation">:</span> <span class="token string">"deathstar-plans"</span>  
+        <span class="token punctuation">-</span> <span class="token key atrule">role</span><span class="token punctuation">:</span> <span class="token string">"produce"</span>  
+          <span class="token key atrule">topic</span><span class="token punctuation">:</span> <span class="token string">"empire-announce"</span>
+</code><button class="copy-code-button">Copy</button></pre>
+<p>詳細更多的用法可以參閱其<a data-tooltip-position="top" aria-label="http://docs.cilium.io/en/stable/" rel="noopener" class="external-link" href="http://docs.cilium.io/en/stable/" target="_blank">官網</a>&nbsp;來學習</p>
+<h1 data-heading="[](https://www.hwchiu.com/cni-compare.html#OVN &quot;OVN&quot;)OVN"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#OVN" rel="noopener" class="external-link" title="OVN" href="https://www.hwchiu.com/cni-compare.html#OVN" target="_blank"></a>OVN</h1>
+<p><code>OVN</code>,&nbsp;<code>Open Virtual Network</code>&nbsp;是由&nbsp;<code>OpenvSwitch</code>&nbsp;的開發公司,&nbsp;<code>Nicira</code>&nbsp;開發的一套&nbsp;<code>OpenvSwitch</code>&nbsp;管理工具。<br>
+最初開發&nbsp;<code>OVN</code>&nbsp;的用途就是希望能夠透過一個類似&nbsp;<code>SDN Controller</code>&nbsp;概念的應用程式來管理整個網路叢集中的&nbsp;<code>OpenvSwitch</code>, 並且方便且有效率透過管理這些&nbsp;<code>OpenvSwitch</code>&nbsp;來達到各式各樣的網路功能，譬如簡單的 ACL 到多租戶的虛擬網路</p>
+<p>如今&nbsp;<code>OVN</code>&nbsp;也透過&nbsp;<code>CNI</code>&nbsp;的介面以及相關的&nbsp;<code>Kubernetes API</code>&nbsp;來整合到&nbsp;<code>Kubernetes</code>&nbsp;環境中。</p>
+<p>從功能面來說,&nbsp;<code>OVN</code>&nbsp;的主軸還是在於網路功能的提供，除了最基本的&nbsp;<code>Overlay Network</code>&nbsp;之外，也能夠透過&nbsp;<code>OpenvSwitch</code>&nbsp;的架構來實現<br>
+如&nbsp;<code>kubernetes service(ClusterIP,NodePort)</code>&nbsp;等功能。</p>
+<p>從目前的發展來看也許還沒有很強大的力量可以吸引使用者轉換過去，不過若能夠透過&nbsp;<code>OVN</code>&nbsp;配上&nbsp;<code>OpenvSwitch</code>&nbsp;來完成&nbsp;<code>Kubernetes</code>&nbsp;內部所有的&nbsp;<code>Networking</code>&nbsp;功能，則有招一日我認為若能夠將所有的&nbsp;<code>OpenvSwitch</code>&nbsp;都整合&nbsp;<code>DPDK</code>&nbsp;此框架則有機會可以一舉將整個&nbsp;<code>Kubernetes</code>&nbsp;內部所有網路傳輸的效能直接提到到 10Gbps 以上(數字上限很依賴調整，但是 10Gbps 基本上絕對沒問題).</p>
+<p>有興趣玩玩的可以參考&nbsp;<a data-tooltip-position="top" aria-label="https://github.com/openvswitch/ovn-kubernetes" rel="noopener" class="external-link" href="https://github.com/openvswitch/ovn-kubernetes" target="_blank">官網</a>，裡面也有附設相關的&nbsp;<code>Vagrant</code>&nbsp;讓開發者使用看看。</p>
+<h1 data-heading="[](https://www.hwchiu.com/cni-compare.html#SR-IOV &quot;SR-IOV&quot;)SR-IOV"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#SR-IOV" rel="noopener" class="external-link" title="SR-IOV" href="https://www.hwchiu.com/cni-compare.html#SR-IOV" target="_blank"></a>SR-IOV</h1>
+<p>相對於前述所有的&nbsp;<code>CNI</code>&nbsp;都提供一個全面性的網路功能，接下來的幾個&nbsp;<code>CNI</code>&nbsp;則是會跟網卡的硬體資訊有更強烈的整合。<br>
+<code>SR-IOV</code>&nbsp;的介紹可以參考&nbsp;<a data-tooltip-position="top" aria-label="https://blog.pichuang.com.tw/nfv-sr-iov/" rel="noopener" class="external-link" href="https://blog.pichuang.com.tw/nfv-sr-iov/" target="_blank">NFV 網路技術介紹 – SR-IOV</a>&nbsp;這篇文章來學習。</p>
+<p>比較簡單的理解就可以想成硬體網卡端會直接映射一個虛擬網卡到對應的&nbsp;<code>Container</code>&nbsp;內部去使用，這種情況下該&nbsp;<code>Container</code>&nbsp;內往該虛擬網卡送出去的封包都會直接從對外層的實體網卡送出去，不會經過宿主機內部的任何軟體交換機處理。</p>
+<p>好處來說就是效能會更高，速度更快。壞處來說就是基本上&nbsp;<code>Kubernetes</code>&nbsp;原先透過&nbsp;<code>IPTables</code>&nbsp;或是&nbsp;<code>IPvS</code>&nbsp;提供的任何&nbsp;<code>Kubernetes Networking Functions</code>&nbsp;(Services/DNS) 都會失效。</p>
+<p>此外&nbsp;<code>SR-IOV</code>&nbsp;也有&nbsp;<code>VF</code>&nbsp;數量上的限制，所以使用上絕對不會是每個&nbsp;<code>Pod</code>&nbsp;都會使用，而是要依據自己的需求以及對應的情境來使用。</p>
+<h2 data-heading="[](https://www.hwchiu.com/cni-compare.html#Example &quot;Example&quot;)Example"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Example" rel="noopener" class="external-link" title="Example" href="https://www.hwchiu.com/cni-compare.html#Example" target="_blank"></a>Example</h2>
+<p>一個簡單的&nbsp;<code>CNI</code>&nbsp;設定檔範例如下</p>
+<pre class="language-yaml" tabindex="0"><code class="is-loaded language-yaml"><span class="token punctuation">{</span>  
+    <span class="token key atrule">"name"</span><span class="token punctuation">:</span> <span class="token string">"mynet"</span><span class="token punctuation">,</span>  
+    <span class="token key atrule">"type"</span><span class="token punctuation">:</span> <span class="token string">"sriov"</span><span class="token punctuation">,</span>  
+    <span class="token key atrule">"if0"</span><span class="token punctuation">:</span> <span class="token string">"enp1s0f1"</span><span class="token punctuation">,</span>  
+    <span class="token key atrule">"ipam"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>  
+        <span class="token key atrule">"type"</span><span class="token punctuation">:</span> <span class="token string">"host-local"</span><span class="token punctuation">,</span>  
+        <span class="token key atrule">"subnet"</span><span class="token punctuation">:</span> <span class="token string">"10.55.206.0/26"</span><span class="token punctuation">,</span>  
+        <span class="token key atrule">"routes"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>  
+            <span class="token punctuation">{</span> <span class="token key atrule">"dst"</span><span class="token punctuation">:</span> <span class="token string">"0.0.0.0/0"</span> <span class="token punctuation">}</span>  
+        <span class="token punctuation">]</span><span class="token punctuation">,</span>  
+        <span class="token key atrule">"gateway"</span><span class="token punctuation">:</span> <span class="token string">"10.55.206.1"</span>  
+    <span class="token punctuation">}</span>  
+<span class="token punctuation">}</span>
+</code><button class="copy-code-button">Copy</button></pre>
+<p>使用上強烈建議要搭配&nbsp;<code>Intel</code>&nbsp;針對&nbsp;<code>SR-IOV</code>&nbsp;所開發的&nbsp;<code>Device Plugin</code>&nbsp;來處理&nbsp;<code>VF</code>&nbsp;的同步與管理，可以減少更多對硬體資訊的依賴性。</p>
+<p>有興趣的可以參閱&nbsp;<code>Intel</code>&nbsp;所維護的&nbsp;<a data-tooltip-position="top" aria-label="https://github.com/intel/sriov-cni" rel="noopener" class="external-link" href="https://github.com/intel/sriov-cni" target="_blank">SRIOV-CNI</a></p>
+<p>SR-IOV 最早期的 Plugin 並不是 Intel 所開發的，但是 Intel 將其 Fork 回來並且加入了更多的功能，同時也在同一個&nbsp;<code>Plugin</code>&nbsp;之中去支援 DPDK 的功能</p>
+<h1 data-heading="[](https://www.hwchiu.com/cni-compare.html#DPDK &quot;DPDK&quot;)DPDK"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#DPDK" rel="noopener" class="external-link" title="DPDK" href="https://www.hwchiu.com/cni-compare.html#DPDK" target="_blank"></a>DPDK</h1>
+<p>與&nbsp;<code>SR-IOV</code>&nbsp;類似，都是針對特定用途且有網卡資訊依賴性的&nbsp;<code>CNI</code>&nbsp;插件，主旨都在提供一個更高速且更低傳輸延遲的網路環境。</p>
+<p><code>DPDK</code>&nbsp;就是一個&nbsp;<code>Kernel ByPass</code>&nbsp;的應用程式架構，透過&nbsp;<code>Polling</code>&nbsp;的方式來盡可能的使用&nbsp;<code>CPU</code>&nbsp;去輪詢網卡來提升網卡的處理效率，在使用上則必須要指定對應的實體網卡資訊。<br>
+一旦網卡使用上了&nbsp;<code>DPDK</code>, 所有未客製化的常見工具 (ifconfig, ip) 等都沒有辦法檢視到該網卡的資訊，因為該網卡已經從&nbsp;<code>Kernel</code>&nbsp;內消失了。</p>
+<h2 data-heading="[](https://www.hwchiu.com/cni-compare.html#Example-1 &quot;Example&quot;)Example"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Example-1" rel="noopener" class="external-link" title="Example" href="https://www.hwchiu.com/cni-compare.html#Example-1" target="_blank"></a>Example</h2>
+<p>一個關於&nbsp;<code>DPDK</code>&nbsp;的&nbsp;<code>CNI</code>&nbsp;設定&nbsp;<code>Yaml</code>&nbsp;如下</p>
+<pre class="language-yaml" tabindex="0"><code class="is-loaded language-yaml"><span class="token punctuation">{</span>  
+    <span class="token key atrule">"name"</span><span class="token punctuation">:</span> <span class="token string">"mynet"</span><span class="token punctuation">,</span>  
+    <span class="token key atrule">"type"</span><span class="token punctuation">:</span> <span class="token string">"sriov"</span><span class="token punctuation">,</span>  
+    <span class="token key atrule">"if0"</span><span class="token punctuation">:</span> <span class="token string">"enp1s0f1"</span><span class="token punctuation">,</span>  
+    <span class="token key atrule">"if0name"</span><span class="token punctuation">:</span> <span class="token string">"net0"</span><span class="token punctuation">,</span>  
+    <span class="token key atrule">"dpdk"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>  
+        "kernel_driver"<span class="token punctuation">:</span><span class="token string">"ixgbevf"</span><span class="token punctuation">,</span>  
+        "dpdk_driver"<span class="token punctuation">:</span><span class="token string">"igb_uio"</span><span class="token punctuation">,</span>  
+        "dpdk_tool"<span class="token punctuation">:</span><span class="token string">"/opt/dpdk/usertools/dpdk-devbind.py"</span>  
+    <span class="token punctuation">}</span>  
+<span class="token punctuation">}</span>
+</code><button class="copy-code-button">Copy</button></pre>
+<p><code>Intel</code>&nbsp;將&nbsp;<code>DPDK</code>&nbsp;相關的功能一起放在&nbsp;<code>SRIOV-CNI</code>&nbsp;裡面，可以到<a data-tooltip-position="top" aria-label="https://github.com/intel/sriov-cni" rel="noopener" class="external-link" href="https://github.com/intel/sriov-cni" target="_blank">SRIOV-CNI Github</a>參考用法</p>
+<h1 data-heading="[](https://www.hwchiu.com/cni-compare.html#Bond-cni &quot;Bond-cni&quot;)Bond-cni"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Bond-cni" rel="noopener" class="external-link" title="Bond-cni" href="https://www.hwchiu.com/cni-compare.html#Bond-cni" target="_blank"></a>Bond-cni</h1>
+<p><code>Bonding</code>, 或是&nbsp;<code>Teaming</code>&nbsp;都是非常類似概念的一種實作，本文主要針對&nbsp;<code>Bonding</code>&nbsp;來介紹。</p>
+<p>歡迎參考&nbsp;<code>Redhat</code>&nbsp;的文件來學習&nbsp;<code>Teaming</code>&nbsp;以及&nbsp;<code>Bonding</code>&nbsp;的差異<br>
+<a data-tooltip-position="top" aria-label="https://rhelblog.redhat.com/2014/06/23/team-driver/" rel="noopener" class="external-link" href="https://rhelblog.redhat.com/2014/06/23/team-driver/" target="_blank">If You Like Bonding, You Will Love Teaming</a></p>
+<p>能夠將多張網卡抽象成一張網卡來使用，這種情況下該網卡能夠提供下列的功能</p>
+<ol>
+<li>Load-Balancing<br>
+能夠針對&nbsp;<code>Layer2/Layer3/Layer4</code>&nbsp;等不同的規範讓不同的連線最後透過不同的實體網卡傳輸，舉例來說兩張 1G 的網卡綁在一起後是有機會能夠提供 2Gbps 的傳輸數率</li>
+<li>Fault-tolerance</li>
+<li>Active-Backup<br>
+當底層網卡有任何故障的時候，最上層的應用程式可以不需要意會到這種情況且依然有辦法繼續傳送網路封包。</li>
+</ol>
+<h2 data-heading="[](https://www.hwchiu.com/cni-compare.html#Example-2 &quot;Example&quot;)Example"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Example-2" rel="noopener" class="external-link" title="Example" href="https://www.hwchiu.com/cni-compare.html#Example-2" target="_blank"></a>Example</h2>
+<p>相關的&nbsp;<code>CNI</code>&nbsp;設定如下</p>
+<pre class="language-yaml" tabindex="0"><code class="is-loaded language-yaml"><span class="token punctuation">{</span>  
+	<span class="token key atrule">"name"</span><span class="token punctuation">:</span> <span class="token string">"mynet"</span><span class="token punctuation">,</span>  
+	<span class="token key atrule">"type"</span><span class="token punctuation">:</span> <span class="token string">"flannel"</span><span class="token punctuation">,</span>  
+	<span class="token key atrule">"delegate"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>  
+		<span class="token key atrule">"type"</span><span class="token punctuation">:</span> <span class="token string">"bond"</span><span class="token punctuation">,</span>  
+		<span class="token key atrule">"mode"</span><span class="token punctuation">:</span> <span class="token string">"active-backup"</span><span class="token punctuation">,</span>  
+		<span class="token key atrule">"miimon"</span><span class="token punctuation">:</span> <span class="token string">"100"</span><span class="token punctuation">,</span>  
+		<span class="token key atrule">"links"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>  
+            <span class="token punctuation">{</span>  
+				<span class="token key atrule">"name"</span><span class="token punctuation">:</span> <span class="token string">"ens3f2"</span>  
+			<span class="token punctuation">}</span><span class="token punctuation">,</span>  
+			<span class="token punctuation">{</span>  
+				<span class="token key atrule">"name"</span><span class="token punctuation">:</span> <span class="token string">"ens3f2d1"</span>  
+			<span class="token punctuation">}</span>  
+		<span class="token punctuation">]</span>  
+	<span class="token punctuation">}</span>  
+<span class="token punctuation">}</span>
+</code><button class="copy-code-button">Copy</button></pre>
+<p>這個&nbsp;<code>CNI</code>&nbsp;Plugin 也是由&nbsp;<code>Intel</code>&nbsp;所開發的，不得不說&nbsp;<code>Intel</code>&nbsp;對於&nbsp;<code>On-premise</code>&nbsp;環境中的&nbsp;<code>Networking Solution</code>&nbsp;下足了功夫，缺少什麼就自己實現什麼並且開源，最後將這些各式各樣的&nbsp;<code>CNI Plugin</code>&nbsp;統整成為自己的解決方案。</p>
+<p>有興趣了解更多的可以參閱其<a data-tooltip-position="top" aria-label="https://github.com/intel/bond-cni" rel="noopener" class="external-link" href="https://github.com/intel/bond-cni" target="_blank">intel/bond-cni</a></p>
+<h1 data-heading="[](https://www.hwchiu.com/cni-compare.html#Multus-CNI-Genie-Knitter &quot;Multus/CNI-Genie/Knitter&quot;)Multus/CNI-Genie/Knitter"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Multus-CNI-Genie-Knitter" rel="noopener" class="external-link" title="Multus/CNI-Genie/Knitter" href="https://www.hwchiu.com/cni-compare.html#Multus-CNI-Genie-Knitter" target="_blank"></a>Multus/CNI-Genie/Knitter</h1>
+<p>前面講了非常多的&nbsp;<code>CNI Plugin</code>，從全面性的網路功能到依賴特定網卡型號的用途都有，接下來要介紹的&nbsp;<code>CNI Plugin</code>&nbsp;可以說是一個非常特別類型的&nbsp;<code>CNI</code>&nbsp;用法。</p>
+<p>舉&nbsp;<code>Kubernetes</code>&nbsp;為範例，對於每一個創建的&nbsp;<code>Pod</code>&nbsp;只會呼叫一次&nbsp;<code>CNI</code>&nbsp;來設定相關的網路功能，然而在某些場景應用中，會特別希望該&nbsp;<code>Pod</code>&nbsp;中有多個網路介面。我這邊使用下圖作為一個範例介紹</p>
+<p>試想一個情境，有很多的應用程式容器化之後要運行在&nbsp;<code>Kubernetes</code>&nbsp;上，這些容器本身需要互相溝通協調，同時這些容器本身有非常強烈的網路效能需求，譬如&nbsp;<code>High Throughput/Low Latency</code>.</p>
+<p>在這些應用程式尚未容器化以前，其架構中常常會規劃成&nbsp;<code>Control Network</code>&nbsp;以及&nbsp;<code>Data Network</code>. 這些應用程式透過&nbsp;<code>Control Network</code>&nbsp;來傳輸控制用的資料，而透過&nbsp;<code>Data Network</code>&nbsp;來傳輸真正的資料。</p>
+<p>這些應用程式容器化遷移到&nbsp;<code>Kubernetes</code>&nbsp;之後，要如何在&nbsp;<code>Kubernetes</code>&nbsp;上滿足這些需求?</p>
+<p>就算今天&nbsp;<code>Kubernetes</code>&nbsp;不用&nbsp;<code>IPTables</code>&nbsp;而改用&nbsp;<code>IPvS</code>&nbsp;的模式來處理相關的功能，整體傳輸的速度還是受限於&nbsp;<code>Linux Kernel</code>而沒有辦法達到令人滿意的境界，勢必要另尋它路來處理。<br>
+<img alt="Pasted image 20230511103421.png" src="Pasted image 20230511103421.png" class="internal-embed"><br>
+這種需求的情況下，有一種特別的&nbsp;<code>CNI</code>&nbsp;就誕生了，這類型的&nbsp;<code>CNI</code>&nbsp;本身沒有提供任何的網路應用功能，而是作為一個呼叫者去銜接數個&nbsp;<code>CNI Plugins</code>&nbsp;來處理。<br>
+這邊借用&nbsp;<code>Multus</code>&nbsp;的一張圖片來說<br>
+<img src="https://github.com/intel/multus-cni/raw/master/doc/images/multus_cni_pod.png" referrerpolicy="no-referrer"></p>
+<p>最終目的就是希望每個&nbsp;<code>Container</code>&nbsp;被創立的時候都可以執行多次的&nbsp;<code>CNI Plugin</code>.</p>
+<p>因此整個架構就會是&nbsp;<code>Kubernetes</code>&nbsp;–&gt;&nbsp;<code>Special CNI</code>&nbsp;-&gt;&nbsp;<code>Other CNIs</code>.</p>
+<p>現在提供這種需求的&nbsp;<code>CNI</code>&nbsp;也不少，由於目的相同，大部分都是單純用法不同，因此我將這些&nbsp;<code>CNI</code>&nbsp;都放在一起。</p>
+<p><code>Mutlus-CNI</code>&nbsp;是由&nbsp;<code>Intel</code>&nbsp;所主導開發的，看到這邊再來回想一下前面所介紹的&nbsp;<code>SRIOV/DPDK/Bonding</code>&nbsp;等也是由&nbsp;<code>Intel</code>&nbsp;所維護的相關&nbsp;<code>CNI Plugin</code>。</p>
+<p>不難想像&nbsp;<code>Intel</code>&nbsp;想要做的是一個整體的網路解決方案，先透過個別的&nbsp;<code>CNI</code>&nbsp;提供獨特的功能，最後透過&nbsp;<code>Multus</code>&nbsp;的方式將這些&nbsp;<code>CNI</code>&nbsp;全部串接起來來滿足使用者的需求。</p>
+<h2 data-heading="[](https://www.hwchiu.com/cni-compare.html#Example-3 &quot;Example&quot;)Example"><a data-tooltip-position="top" aria-label="https://www.hwchiu.com/cni-compare.html#Example-3" rel="noopener" class="external-link" title="Example" href="https://www.hwchiu.com/cni-compare.html#Example-3" target="_blank"></a>Example</h2>
+<p>這邊舉一個&nbsp;<code>Intel</code>&nbsp;提供的範例，看看是如何透過&nbsp;<code>Multus</code>&nbsp;串接各式各樣的&nbsp;<code>CNI</code>&nbsp;來使用</p>
+<pre class="language-yaml" tabindex="0"><code class="is-loaded language-yaml"><span class="token punctuation">{</span>  
+    <span class="token key atrule">"name"</span><span class="token punctuation">:</span> <span class="token string">"multus-demo-network"</span><span class="token punctuation">,</span>  
+    <span class="token key atrule">"type"</span><span class="token punctuation">:</span> <span class="token string">"multus"</span><span class="token punctuation">,</span>  
+    <span class="token key atrule">"delegates"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>  
+        <span class="token punctuation">{</span>  
+                <span class="token key atrule">"type"</span><span class="token punctuation">:</span> <span class="token string">"sriov"</span><span class="token punctuation">,</span>  
+                <span class="token comment">#part of sriov plugin conf  </span>
+                <span class="token key atrule">"if0"</span><span class="token punctuation">:</span> <span class="token string">"enp12s0f0"</span><span class="token punctuation">,</span>  
+                <span class="token key atrule">"ipam"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>  
+                        <span class="token key atrule">"type"</span><span class="token punctuation">:</span> <span class="token string">"host-local"</span><span class="token punctuation">,</span>  
+                        <span class="token key atrule">"subnet"</span><span class="token punctuation">:</span> <span class="token string">"10.56.217.0/24"</span><span class="token punctuation">,</span>  
+                        <span class="token key atrule">"rangeStart"</span><span class="token punctuation">:</span> <span class="token string">"10.56.217.131"</span><span class="token punctuation">,</span>  
+                        <span class="token key atrule">"rangeEnd"</span><span class="token punctuation">:</span> <span class="token string">"10.56.217.190"</span><span class="token punctuation">,</span>  
+                        <span class="token key atrule">"routes"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>  
+                                <span class="token punctuation">{</span> <span class="token key atrule">"dst"</span><span class="token punctuation">:</span> <span class="token string">"0.0.0.0/0"</span> <span class="token punctuation">}</span>  
+                        <span class="token punctuation">]</span><span class="token punctuation">,</span>  
+                        <span class="token key atrule">"gateway"</span><span class="token punctuation">:</span> <span class="token string">"10.56.217.1"</span>  
+                <span class="token punctuation">}</span>  
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>  
+        <span class="token punctuation">{</span>  
+                <span class="token key atrule">"type"</span><span class="token punctuation">:</span> <span class="token string">"ptp"</span><span class="token punctuation">,</span>  
+                <span class="token key atrule">"ipam"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>  
+                        <span class="token key atrule">"type"</span><span class="token punctuation">:</span> <span class="token string">"host-local"</span><span class="token punctuation">,</span>  
+                        <span class="token key atrule">"subnet"</span><span class="token punctuation">:</span> <span class="token string">"10.168.1.0/24"</span><span class="token punctuation">,</span>  
+                        <span class="token key atrule">"rangeStart"</span><span class="token punctuation">:</span> <span class="token string">"10.168.1.11"</span><span class="token punctuation">,</span>  
+                        <span class="token key atrule">"rangeEnd"</span><span class="token punctuation">:</span> <span class="token string">"10.168.1.20"</span><span class="token punctuation">,</span>  
+                        <span class="token key atrule">"routes"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>  
+                                <span class="token punctuation">{</span> <span class="token key atrule">"dst"</span><span class="token punctuation">:</span> <span class="token string">"0.0.0.0/0"</span> <span class="token punctuation">}</span>  
+                        <span class="token punctuation">]</span><span class="token punctuation">,</span>  
+                        <span class="token key atrule">"gateway"</span><span class="token punctuation">:</span> <span class="token string">"10.168.1.1"</span>  
+                <span class="token punctuation">}</span>  
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>  
+        <span class="token punctuation">{</span>  
+                <span class="token key atrule">"type"</span><span class="token punctuation">:</span> <span class="token string">"flannel"</span><span class="token punctuation">,</span>  
+                <span class="token key atrule">"delegate"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>  
+                        <span class="token key atrule">"isDefaultGateway"</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>  
+                <span class="token punctuation">}</span>  
+        <span class="token punctuation">}</span>  
+    <span class="token punctuation">]</span>  
+<span class="token punctuation">}</span>
+</code><button class="copy-code-button">Copy</button></pre>
+<h1 data-heading="Reference">Reference</h1>
+<ul>
+<li><a data-tooltip-position="top" aria-label="https://kubernetes.io/blog/2017/01/scaling-kubernetes-deployments-with-policy-base-networking/" rel="noopener" class="external-link" href="https://kubernetes.io/blog/2017/01/scaling-kubernetes-deployments-with-policy-base-networking/" target="_blank">Scaling Kubernetes deployments with Policy-Based Networking</a></li>
+<li><a data-tooltip-position="top" aria-label="http://docs.cilium.io/en/stable/policy/language/#http" rel="noopener" class="external-link" href="http://docs.cilium.io/en/stable/policy/language/#http" target="_blank">Cilium Network Policy</a></li>
+<li><a data-tooltip-position="top" aria-label="https://github.com/containernetworking/cni" rel="noopener" class="external-link" href="https://github.com/containernetworking/cni" target="_blank">CNI - the Container Network Interface</a></li>
+</ul>
+    </body>
+</html>

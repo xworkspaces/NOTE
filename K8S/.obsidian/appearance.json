@@ -1,0 +1,11 @@
+{
+  "accentColor": "#58befe",
+  "enabledCssSnippets": [
+    "eva"
+  ],
+  "cssTheme": "Obsidianite",
+  "baseFontSize": 22,
+  "interfaceFontFamily": "Times New Roman",
+  "textFontFamily": "Times New Roman",
+  "monospaceFontFamily": "Times New Roman"
+}

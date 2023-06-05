@@ -1,0 +1,232 @@
+{
+  "main": {
+    "id": "5cce708ae2dad7ee",
+    "type": "split",
+    "children": [
+      {
+        "id": "c4f92bb85772f2f1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6a1b760153378c56",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "K8S/Kubernetes/淺談 Kubernetes 設計原理.md",
+                "mode": "source",
+                "source": true
+              }
+            }
+          },
+          {
+            "id": "0d22e19a9236b213",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "45276521dde995f2",
+    "type": "split",
+    "children": [
+      {
+        "id": "2adf0b9bf6199bd0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8f61fcd11203817b",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "954ba49dc4390411",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "e5093ab6ef71f3fb",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          },
+          {
+            "id": "0c7f518e30944bdc",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "4daebe91a0cb5499",
+    "type": "split",
+    "children": [
+      {
+        "id": "cbe899a7c50a237a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "03b476c5fedfb761",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": false
+              }
+            }
+          },
+          {
+            "id": "455c126272fd7415",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "da5aabf8cc090bdf",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": false
+              }
+            }
+          },
+          {
+            "id": "b2bdb4443a7c31fb",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md"
+              }
+            }
+          },
+          {
+            "id": "f6e3aac7bf181798",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "markdown-importer:Open format converter": false,
+      "templater-obsidian:Templater": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
+    }
+  },
+  "active": "0d22e19a9236b213",
+  "lastOpenFiles": [
+    "Untitled 1.canvas",
+    "img_process/img_process Reference web.md",
+    "K8S/Container_Network_Interface/Kubernets 與 CNI 相關的設定.md",
+    "Untitled.canvas",
+    "conflict-files-obsidian-git.md",
+    "K8S/Container_Network_Interface/Kubernetes - Container Network Interface (CNI).md",
+    "img_process",
+    "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md",
+    "note.zip",
+    "K8S/Container_Network_Interface/img/Pasted image 20230511103421.png",
+    "K8S/Kubernetes/淺談 Kubernetes 設計原理.md",
+    "K8S/Kubernetes/kubernetes.md",
+    "K8S/Kubernetes/Kubernetes - Node & Architecture Overview.md",
+    "K8S/Kubernetes/Kubernetes & CRI (Container Runtime Interface).md",
+    "K8S/Kubernetes/Kubernetes & CRI (Container Runtime Interface)II.md",
+    "K8S/Kubernetes/Kubernetes 基礎.md",
+    "K8S/Kubernetes/Kubernetes Service 深度剖析 - 存取路徑差異.md",
+    "K8S/Kubernetes/Kubernetes Service 深度剖析 - 標籤對於 Service 的影響.md",
+    "K8S/Kubernetes/Kubernetes Service 概念詳解.md",
+    "K8S/Kubernetes/kubernetes之多容器pod以及通信.md",
+    "K8S/Kubernetes/Replication Controller.md",
+    "K8S/Kubernetes/Waht is Kubernetes.md",
+    "Rock chip/RK3588.md",
+    "Rock chip/rknn_toolkitlite2_install.md",
+    "K8S/Linunx_container/Container Runtime Interface.md",
+    "K8S/Linunx_container/Container Runtime Interface II.md",
+    "K8S/Linunx_container/Image_Layer_Filesystem_changeset.md",
+    "K8S/Linunx_container/Linux_container_introduce.md",
+    "K8S/Linunx_container/Namespace隔離.md",
+    "K8S/Linunx_container/OCI_Implementation.md",
+    "K8S/Kubernetes/image/Pasted image 20230511102528.png",
+    "K8S/Kubernetes/image/Pasted image 20230511102501.png",
+    "K8S/Kubernetes/image/Pasted image 20230511102450.png",
+    "K8S/Container_Network_Interface/img",
+    "K8S/Container_Network_Interface/img/Pasted image 20230511102200.png",
+    "K8S/Container_Network_Interface",
+    "K8S/react/image/Pasted image 20230216174636.png",
+    "K8S/Linunx_container/image/Pasted image 20230201141917.png",
+    "K8S/Linunx_container/image/Pasted image 20230201142317.png",
+    "K8S/Linunx_container/image/Pasted image 20230110084757.png",
+    "K8S/Linunx_container/image/Pasted image 20230110084703.png",
+    "K8S/react/image",
+    "K8S/Linunx_container/image",
+    "K8S/Kubernetes/image",
+    "K8S/react",
+    "K8S/Linunx_container",
+    "K8S/Kubernetes"
+  ]
+}

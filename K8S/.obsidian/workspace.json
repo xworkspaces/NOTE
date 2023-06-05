@@ -1,0 +1,164 @@
+{
+  "main": {
+    "id": "84bd520992780b65",
+    "type": "split",
+    "children": [
+      {
+        "id": "a31b26280c4a2185",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2647b4a21caea22d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Linunx_container/Container Runtime Interface.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "ef41b3ddbae4a3e8",
+    "type": "split",
+    "children": [
+      {
+        "id": "72bd939f0c7f6671",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "500f07a120b0af2f",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "byCreatedTimeReverse"
+              }
+            }
+          },
+          {
+            "id": "7becae6110253126",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "b78e243611c1748f",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 310.5
+  },
+  "right": {
+    "id": "812ebf769f3718ce",
+    "type": "split",
+    "children": [
+      {
+        "id": "d7fa5e08a0a12307",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "38a3bc6632103951",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Linunx_container/Container Runtime Interface.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "b138b00473755cb7",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Linunx_container/Container Runtime Interface.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "38edaa1d1939993a",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "3552410f7d4cfaf1",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Linunx_container/Container Runtime Interface.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:開啟快速切換": false,
+      "graph:查看關聯圖": false,
+      "daily-notes:開啟今天的每日筆記": false,
+      "templates:插入模板": false,
+      "command-palette:開啟命令面板": false,
+      "canvas:Create new canvas": false,
+      "markdown-importer:開啟 Markdown 格式轉換器": false,
+      "workspaces:管理工作區配置": false
+    }
+  },
+  "active": "2647b4a21caea22d",
+  "lastOpenFiles": [
+    "Linunx_container/OCI_Implementation.md",
+    "Linunx_container/Namespace隔離.md",
+    "Linunx_container/邊車模式 (The Sidecar Pattern) - 介紹.md",
+    "Linunx_container/Container Runtime Interface.md",
+    "Linunx_container/Container Runtime Interface II.md",
+    "Linunx_container/Image_Layer_Filesystem_changeset.md",
+    "Linunx_container/Open_Container_Initiative.md",
+    "Linunx_container/Linux_container_introduce.md",
+    "Kubernetes/Replication Controller.md",
+    "react/淺談 SPA、CSR、SSR、MPA、SSG 專有名詞.md"
+  ]
+}

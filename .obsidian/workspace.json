@@ -11,8 +11,12 @@
             "id": "e6322b57323313f4",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "README.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -89,6 +93,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -105,6 +110,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +132,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "README.md"
+              }
             }
           },
           {
@@ -159,9 +167,9 @@
   },
   "active": "e6322b57323313f4",
   "lastOpenFiles": [
+    "Rock chip/rknn_toolkitlite2_install.md",
     "README.md",
     "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md",
-    "Rock chip/rknn_toolkitlite2_install.md",
     "Rock chip/RK3588.md",
     "Rock chip",
     "K8S/Kubernetes/image/Pasted image 20230201143921.png",

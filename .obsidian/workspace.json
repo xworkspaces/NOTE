@@ -4,19 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "e6b59afb082ac7ad",
+        "id": "6be7877939828fa6",
         "type": "tabs",
         "children": [
           {
-            "id": "cd7266be4f5f4026",
+            "id": "e6322b57323313f4",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "img_process/img_process Reference web.md",
-                "mode": "source",
-                "source": true
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -66,7 +62,7 @@
             }
           },
           {
-            "id": "0c7f518e30944bdc",
+            "id": "451bd0aa9cb4e7f9",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -93,7 +89,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "img_process/img_process Reference web.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -110,7 +105,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "img_process/img_process Reference web.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -132,9 +126,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "img_process/img_process Reference web.md"
-              }
+              "state": {}
             }
           },
           {
@@ -145,8 +137,7 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 4
+        ]
       }
     ],
     "direction": "horizontal",
@@ -155,65 +146,64 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Open quick switcher": false,
-      "graph:Open graph view": false,
-      "canvas:Create new canvas": false,
-      "daily-notes:Open today's daily note": false,
-      "templates:Insert template": false,
-      "command-palette:Open command palette": false,
-      "markdown-importer:Open format converter": false,
+      "switcher:開啟快速切換": false,
+      "graph:查看關聯圖": false,
+      "canvas:建立新畫布": false,
+      "daily-notes:開啟今天的每日筆記": false,
+      "templates:插入模板": false,
+      "command-palette:開啟命令面板": false,
       "templater-obsidian:Templater": false,
+      "markdown-importer:開啟 Markdown 格式轉換器": false,
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "cd7266be4f5f4026",
+  "active": "e6322b57323313f4",
   "lastOpenFiles": [
-    "K8S/Kubernetes/淺談 Kubernetes 設計原理.md",
+    "README.md",
     "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md",
-    "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.html",
-    "Untitled 1.canvas",
-    "img_process/img_process Reference web.md",
-    "K8S/Container_Network_Interface/Kubernets 與 CNI 相關的設定.md",
-    "Untitled.canvas",
-    "conflict-files-obsidian-git.md",
-    "K8S/Container_Network_Interface/Kubernetes - Container Network Interface (CNI).md",
-    "img_process",
-    "note.zip",
-    "K8S/Container_Network_Interface/img/Pasted image 20230511103421.png",
-    "K8S/Kubernetes/kubernetes.md",
-    "K8S/Kubernetes/Kubernetes - Node & Architecture Overview.md",
-    "K8S/Kubernetes/Kubernetes & CRI (Container Runtime Interface).md",
-    "K8S/Kubernetes/Kubernetes & CRI (Container Runtime Interface)II.md",
-    "K8S/Kubernetes/Kubernetes 基礎.md",
-    "K8S/Kubernetes/Kubernetes Service 深度剖析 - 存取路徑差異.md",
-    "K8S/Kubernetes/Kubernetes Service 深度剖析 - 標籤對於 Service 的影響.md",
-    "K8S/Kubernetes/Kubernetes Service 概念詳解.md",
-    "K8S/Kubernetes/kubernetes之多容器pod以及通信.md",
-    "K8S/Kubernetes/Replication Controller.md",
-    "K8S/Kubernetes/Waht is Kubernetes.md",
-    "Rock chip/RK3588.md",
     "Rock chip/rknn_toolkitlite2_install.md",
+    "Rock chip/RK3588.md",
+    "Rock chip",
+    "K8S/Kubernetes/image/Pasted image 20230201143921.png",
+    "K8S/react/image/Pasted image 20230216174636.png",
+    "K8S/Linunx_container/image/Pasted image 20230201142317.png",
+    "K8S/Linunx_container/image/Pasted image 20230201141917.png",
+    "K8S/Linunx_container/image/Pasted image 20230201141859.png",
+    "K8S/Linunx_container/image/Pasted image 20230110084757.png",
+    "K8S/Linunx_container/image/Pasted image 20230110084718.png",
+    "K8S/Linunx_container/image/Pasted image 20230110084703.png",
+    "K8S/Linunx_container/image/Pasted image 20230110084647.png",
+    "K8S/Linunx_container/image/Pasted image 20230109173430.png",
+    "K8S/react/淺談 SPA、CSR、SSR、MPA、SSG 專有名詞.md",
+    "K8S/react/image",
+    "K8S/Linunx_container/邊車模式 (The Sidecar Pattern) - 介紹.md",
+    "K8S/Linunx_container/Open_Container_Initiative.md",
+    "K8S/Linunx_container/OCI_Implementation.md",
+    "K8S/Linunx_container/Namespace隔離.md",
+    "K8S/Linunx_container/Linux_container_introduce.md",
+    "K8S/Linunx_container/Image_Layer_Filesystem_changeset.md",
+    "K8S/Linunx_container/image",
     "K8S/Linunx_container/Container Runtime Interface.md",
     "K8S/Linunx_container/Container Runtime Interface II.md",
-    "K8S/Linunx_container/Image_Layer_Filesystem_changeset.md",
-    "K8S/Linunx_container/Linux_container_introduce.md",
-    "K8S/Linunx_container/Namespace隔離.md",
-    "K8S/Linunx_container/OCI_Implementation.md",
-    "K8S/Kubernetes/image/Pasted image 20230511102528.png",
-    "K8S/Kubernetes/image/Pasted image 20230511102501.png",
-    "K8S/Kubernetes/image/Pasted image 20230511102450.png",
-    "K8S/Container_Network_Interface/img",
-    "K8S/Container_Network_Interface/img/Pasted image 20230511102200.png",
-    "K8S/Container_Network_Interface",
-    "K8S/react/image/Pasted image 20230216174636.png",
-    "K8S/Linunx_container/image/Pasted image 20230201141917.png",
-    "K8S/Linunx_container/image/Pasted image 20230201142317.png",
-    "K8S/Linunx_container/image/Pasted image 20230110084757.png",
-    "K8S/Linunx_container/image/Pasted image 20230110084703.png",
-    "K8S/react/image",
-    "K8S/Linunx_container/image",
+    "K8S/Kubernetes/淺談 Kubernetes 設計原理.md",
+    "K8S/Kubernetes/Waht is Kubernetes.md",
+    "K8S/Kubernetes/Replication Controller.md",
+    "K8S/Kubernetes/kubernetes之多容器pod以及通信.md",
+    "K8S/Kubernetes/kubernetes.md",
+    "K8S/Kubernetes/Kubernetes 基礎.md",
+    "K8S/Kubernetes/Kubernetes Service 深度剖析 - 標籤對於 Service 的影響.md",
+    "K8S/Kubernetes/Kubernetes Service 深度剖析 - 存取路徑差異.md",
+    "K8S/Kubernetes/Kubernetes Service 概念詳解.md",
+    "K8S/Kubernetes/Kubernetes - Node & Architecture Overview.md",
+    "K8S/Kubernetes/Kubernetes & CRI (Container Runtime Interface)II.md",
+    "K8S/Kubernetes/Kubernetes & CRI (Container Runtime Interface).md",
     "K8S/Kubernetes/image",
+    "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.html",
+    "K8S/Container_Network_Interface/Kubernets 與 CNI 相關的設定.md",
+    "K8S/Container_Network_Interface/img",
     "K8S/react",
-    "K8S/Linunx_container"
+    "K8S/Linunx_container",
+    "K8S/Kubernetes",
+    "K8S/Container_Network_Interface"
   ]
 }

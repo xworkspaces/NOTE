@@ -18,8 +18,17 @@
                 "source": true
               }
             }
+          },
+          {
+            "id": "9c7c72e539418d7b",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -93,7 +102,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "img_process/img_process Reference web.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -110,7 +118,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "img_process/img_process Reference web.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -132,9 +139,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "img_process/img_process Reference web.md"
-              }
+              "state": {}
             }
           },
           {
@@ -166,13 +171,16 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "cd7266be4f5f4026",
+  "active": "9c7c72e539418d7b",
   "lastOpenFiles": [
+    "img_process/img_process Reference web.md",
+    "AI_model/AI_modelReference web.md",
+    "Untitled",
+    "AI_model",
     "K8S/Kubernetes/淺談 Kubernetes 設計原理.md",
     "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.md",
     "K8S/Container_Network_Interface/常見 CNI (Container Network Interface) Plugin 介紹.html",
     "Untitled 1.canvas",
-    "img_process/img_process Reference web.md",
     "K8S/Container_Network_Interface/Kubernets 與 CNI 相關的設定.md",
     "Untitled.canvas",
     "conflict-files-obsidian-git.md",
@@ -212,8 +220,6 @@
     "K8S/Linunx_container/image/Pasted image 20230110084703.png",
     "K8S/react/image",
     "K8S/Linunx_container/image",
-    "K8S/Kubernetes/image",
-    "K8S/react",
-    "K8S/Linunx_container"
+    "K8S/Kubernetes/image"
   ]
 }

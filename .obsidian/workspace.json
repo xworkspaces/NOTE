@@ -30,9 +30,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "1095cc928f2f2c72",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "AI認證.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -106,7 +118,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "ONNX inference.md",
+                "file": "AI認證.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -123,7 +135,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "ONNX inference.md",
+                "file": "AI認證.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -146,7 +158,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "ONNX inference.md"
+                "file": "AI認證.md"
               }
             }
           },
@@ -179,14 +191,14 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "446fbf71926ea231",
+  "active": "1095cc928f2f2c72",
   "lastOpenFiles": [
+    "ONNX inference.md",
+    "AI認證.md",
     "Screenshot from 2023-06-27 10-40-30.png",
     "Screenshot from 2023-06-27 10-40-06.png",
     "img_process/img_process Reference web.md",
-    "ONNX inference.md",
     "Untitled 1.md",
-    "Untitled.md",
     "AI_model/LoRA/LoRA_Reference_web.md",
     "conflict-files-obsidian-git.md",
     "AI_model/LoRA",
@@ -225,7 +237,6 @@
     "K8S/react/image/Pasted image 20230216174636.png",
     "K8S/Linunx_container/image/Pasted image 20230201141917.png",
     "K8S/Linunx_container/image/Pasted image 20230201142317.png",
-    "K8S/Linunx_container/image/Pasted image 20230110084757.png",
     "K8S/react/image",
     "K8S/Linunx_container/image",
     "K8S/Kubernetes/image"

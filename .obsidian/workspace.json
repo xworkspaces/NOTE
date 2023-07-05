@@ -20,39 +20,19 @@
             }
           },
           {
-            "id": "9c7c72e539418d7b",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {}
-            }
-          },
-          {
-            "id": "6fd9084e1f8e3a17",
+            "id": "446fbf71926ea231",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AI_model/LoRA/LoRA_Reference_web.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "86641cf0b9daa0ef",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "conflict-files-obsidian-git.md",
+                "file": "ONNX inference.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -126,7 +106,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "conflict-files-obsidian-git.md",
+                "file": "ONNX inference.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -143,7 +123,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "conflict-files-obsidian-git.md",
+                "file": "ONNX inference.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -166,7 +146,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "conflict-files-obsidian-git.md"
+                "file": "ONNX inference.md"
               }
             }
           },
@@ -199,14 +179,17 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "86641cf0b9daa0ef",
+  "active": "446fbf71926ea231",
   "lastOpenFiles": [
+    "Screenshot from 2023-06-27 10-40-30.png",
+    "Screenshot from 2023-06-27 10-40-06.png",
+    "img_process/img_process Reference web.md",
+    "ONNX inference.md",
+    "Untitled 1.md",
+    "Untitled.md",
     "AI_model/LoRA/LoRA_Reference_web.md",
     "conflict-files-obsidian-git.md",
     "AI_model/LoRA",
-    "Untitled 1.md",
-    "Untitled.md",
-    "img_process/img_process Reference web.md",
     "AI_model/AI_modelReference web.md",
     "AI_model",
     "K8S/Kubernetes/淺談 Kubernetes 設計原理.md",
@@ -233,7 +216,6 @@
     "Rock chip/RK3588.md",
     "Rock chip/rknn_toolkitlite2_install.md",
     "K8S/Linunx_container/Container Runtime Interface.md",
-    "K8S/Linunx_container/Container Runtime Interface II.md",
     "K8S/Kubernetes/image/Pasted image 20230511102528.png",
     "K8S/Kubernetes/image/Pasted image 20230511102501.png",
     "K8S/Kubernetes/image/Pasted image 20230511102450.png",
@@ -244,7 +226,6 @@
     "K8S/Linunx_container/image/Pasted image 20230201141917.png",
     "K8S/Linunx_container/image/Pasted image 20230201142317.png",
     "K8S/Linunx_container/image/Pasted image 20230110084757.png",
-    "K8S/Linunx_container/image/Pasted image 20230110084703.png",
     "K8S/react/image",
     "K8S/Linunx_container/image",
     "K8S/Kubernetes/image"
